@@ -17,7 +17,7 @@ def recup_data_map():
         exit()
     #lecture du fichier
     DataMap = np.loadtxt(sys.argv[1], skiprows=1, dtype=float)
-    print(DataMap)
+    return DataMap
 
 def init_cylindres(donnees_map):
     cylindres = [0.0,0.0,0.0] # creations des cylindres avec le bot en 0.0 une cylindre aussi
