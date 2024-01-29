@@ -1,7 +1,7 @@
 import math
 
-# cylindre type_cylindre :   coox      cooy      type_cylindre
-#                   1.7554    1.8713    3.0000
+# cylindre type_cylindre :  coox      cooy      type_cylindre
+#                           1.7554    1.8713    3.0000
  
 # descrption des types_cylindre de cylindres gain, masse
 type_cylindre =[(1.0, 1.0),
