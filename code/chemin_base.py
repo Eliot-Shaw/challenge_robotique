@@ -39,3 +39,7 @@ def cylindre_plus_fit(id_cylindre, cylindres):
             fitness.append(999999)
 
     return fitness.index(min(fitness))
+
+def echanger_cylindres(cylindres, pos_cylindre, pos_voulue):
+    cylindres[pos_cylindre], cylindres[pos_voulue] = cylindres[pos_voulue], cylindres[pos_cylindre]
+    return cylindres
