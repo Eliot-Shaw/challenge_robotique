@@ -31,14 +31,14 @@ def calcul_dist(cylindre1, cylindre2):
     return distance_valeur_poids
 
 def choix_cylindre_suivant(id_cylindre, cylindres):
-    fitness = []
+    distance_candidat = []
     for cylindre in cylindres:
         if cylindre > id_cylindre:
-            fitness.append(calcul_dist(cylindres[id_cylindre], cylindres[cylindre]))
+            distance_candidat.append(calcul_dist(cylindres[id_cylindre], cylindres[cylindre]))
         else: 
-            fitness.append(999999)
+            distance_candidat.append(999999)
 
-    return fitness.index(min(fitness))
+    return distance_candidat.index(min(distance_candidat))
 
 def echanger_cylindres(cylindres, pos_cylindre, pos_voulue):
     cylindres[pos_cylindre], cylindres[pos_voulue] = cylindres[pos_voulue], cylindres[pos_cylindre]
