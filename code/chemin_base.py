@@ -1,6 +1,7 @@
 import math
 import numpy as np
 import sys
+import matplotlib.pyplot as plt
 
 # cylindre type_cylindre :  coox      cooy      type_cylindre
 #                           1.7554    1.8713    3.0000
@@ -20,30 +21,57 @@ def recup_data_map():
     return DataMap
 
 def init_cylindres(donnees_map):
-    cylindres = [0.0, 0.0, 0.0] # creations des cylindres avec le bot en 0.0 une cylindre aussi
-    cylindres.append(donnees_map)
-    return cylindres 
+    global cylindres 
+    cylindres = np.concatenate((np.array([[0.0, 0.0, 0.0]]), donnees_map), axis=0) # creations des cylindres avec le bot en 0.0 une cylindre aussi
 
-def calcul_dist(cylindre1, cylindre2):
-    distance_raw = math.sqrt((cylindre1[0] - cylindre2[0])**2 + (cylindre1[1] - cylindre2[1])**2)
-    distance_valeur = distance_raw/type_cylindre[cylindre2[2]-1][0]
-    distance_valeur_poids = distance_valeur*type_cylindre[cylindre2[2]-1][1]
+def calcul_dist(id1, id2):
+    distance_raw = math.sqrt((float(cylindres[id1][0]) - float(cylindres[id2][0]))**2 + (float(cylindres[id1][1]) - float(cylindres[id2][1]))**2)
+    distance_valeur = distance_raw/type_cylindre[int(cylindres[id2][2])-1][0]
+    distance_valeur_poids = distance_valeur*type_cylindre[int(cylindres[id2][2])-1][1]
     return distance_valeur_poids
 
-def choix_cylindre_suivant(id_cylindre, cylindres):
+def choix_cylindre_suivant(id_cylindre):
     distance_candidat = []
-    for cylindre in cylindres:
-        if cylindre > id_cylindre:
-            distance_candidat.append(calcul_dist(cylindres[id_cylindre], cylindres[cylindre]))
+    for i in range(len(cylindres)):
+        if i > id_cylindre:
+            distance_candidat.append(calcul_dist(id_cylindre, i))
         else: 
             distance_candidat.append(999999)
 
     return distance_candidat.index(min(distance_candidat))
 
-def echanger_cylindres(cylindres, pos_cylindre, pos_voulue):
-    cylindres[pos_cylindre], cylindres[pos_voulue] = cylindres[pos_voulue], cylindres[pos_cylindre]
+def echanger_cylindres(id_cylindre, id_voulue):
+    cylindres[id_cylindre], cylindres[id_voulue] = cylindres[id_voulue], cylindres[id_cylindre]
     return cylindres
 
+def main():
+    init_cylindres(recup_data_map())
+
+    for i in range(len(cylindres)):
+        echanger_cylindres(i, choix_cylindre_suivant(i))
+    
+    print(cylindres)
+    
+    
+    tColorTab = {1:'red', 2:'green', 3:'blue'}
+    dbRayon = 0.85
+    #affichage des donnees de la carte
+    x=recup_data_map()[:,0]
+    y=recup_data_map()[:,1]
+    t=recup_data_map()[:,2]
+    n = len(x)
+    fig = plt.figure(1)
+    ax = fig.gca()
+    for i in range(n):
+        plt.plot(x[i],y[i],marker='+',color=tColorTab[int(t[i])])
+        c1 = plt.Circle((x[i],y[i]), dbRayon,color=tColorTab[int(t[i])] )
+        ax.add_patch(c1)
+    
+    for i in range(n):
+        x=cylindres[:,0]
+        y=cylindres[:,1]
+        ax.annotate(i, (x[i],y[i]))
+    plt.show()
+
 if __name__ == '__main__':
-    pass
- 
+    main()
