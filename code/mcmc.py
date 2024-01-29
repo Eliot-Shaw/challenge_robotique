@@ -1,9 +1,8 @@
-import csv
 import random as rd
 import math as mt
-import matplotlib.pyplot as plt
 import numpy as np
 import sys
+import matplotlib.pyplot as plt
 
 
 def importerVilles():
@@ -21,16 +20,16 @@ def distance(VA, VB, lstV):
     iA = 0
     iB = 0
     for i in range(len(lstV)):
-        if lstV[i][0] == VA:
+        if lstV[i].all() == VA.all():
             iA = i
-        elif lstV[i][0] == VB:
+        elif lstV[i].all() == VB.all():
             iB = i
     
 
-    lat1 = float(lstV[iA][1])
-    lat2 = float(lstV[iB][1])
-    lon1 = float(lstV[iA][2])
-    lon2 = float(lstV[iB][2])
+    lat1 = float(lstV[iA][0])
+    lat2 = float(lstV[iB][0])
+    lon1 = float(lstV[iA][1])
+    lon2 = float(lstV[iB][1])
 
 
     return mt.sqrt((lat1 - lat2)**2 + (lon1 - lon2)**2)
@@ -50,9 +49,9 @@ def distanceAvecMat(VA, VB, lstV, matDis):
     iA = 0
     iB = 0
     for i in range(len(lstV)):
-        if lstV[i][0] == VA:
+        if lstV[i].all() == VA.all():
             iA = i
-        elif lstV[i][0] == VB:
+        elif lstV[i].all() == VB.all():
             iB = i
 
     return matDis[iA][iB]
@@ -74,11 +73,12 @@ def longueur(Chemin, Villes, matDis):
 def MCMC(N):
     Villes = importerVilles()
     m = len(Villes)
-    sigma0 = [Villes[i][0] for i in range(m)]
-    lsigma0 = longueur(sigma0, Villes)
+    matDistance = calculMatriceDis(Villes)
+    sigma0 = np.array([Villes[i] for i in range(m)])
+    lsigma0 = longueur(sigma0, Villes, matDistance)
     sigma = sigma0.copy()
     T = 100
-    matDistance = calculMatriceDis
+    
     for n in range(2,N):
         #T = abs(mt.sin(n)/(n**1.1))*300
         #T *= 0.999
@@ -119,11 +119,11 @@ def MCMC(N):
 def MCMC2(N, sigma1):
     Villes = importerVilles()
     m = len(Villes)
+    matDistance = calculMatriceDis(Villes)
     sigma0 = sigma1
-    lsigma0 = longueur(sigma0, Villes)
+    lsigma0 = longueur(sigma0, Villes, matDistance)
     sigma = sigma0.copy()
     T = 100
-    matDistance = calculMatriceDis
     for n in range(2,N):
         #T = abs(mt.sin(n)/(n**1.1))*300
         #T *= 0.999
@@ -179,15 +179,39 @@ def Tn(N, h = 1):
 
     return 1/mt.sqrt(k)
     '''
-    return 1000*(0.999**N)
+    return 10*(0.999**N)
 
 
 #lancement(500)
 
-l, sig0 = MCMC(50000)
-"""
-l, sig = MCMC2(50000, sig0)
-"""
+l, sig0 = MCMC(500)
+
+# l, sig = MCMC2(50000, sig0)
+
 print(sig0)
 print(l)
 
+fig = plt.figure(1)
+
+
+tColorTab = {1:'red', 2:'green', 3:'blue'}
+dbRayon = 0.85
+
+DataMap = np.loadtxt(sys.argv[1], skiprows=1, dtype=float)
+#affichage des donnees de la carte
+x=DataMap[:,0]
+y=DataMap[:,1]
+t=DataMap[:,2]
+n = len(x)
+fig = plt.figure(1)
+ax = fig.gca()
+for i in range(n):
+    plt.plot(x[i],y[i],marker='+',color=tColorTab[int(t[i])])
+    c1 = plt.Circle((x[i],y[i]), dbRayon,color=tColorTab[int(t[i])] )
+    ax.add_patch(c1)
+
+plt.plot(sig0[:][0], sig0[:][1])
+plt.show()
+
+# Villes = importerVilles()
+# print(Villes)
