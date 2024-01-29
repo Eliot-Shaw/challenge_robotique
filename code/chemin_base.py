@@ -30,8 +30,8 @@ def calcul_dist(cylindre1, cylindre2):
     distance_valeur_poids = distance_valeur*type_cylindre[cylindre2[2]-1][1]
     return distance_valeur_poids
 
-def cylindre_plus_fit(id_cylindre, cylindres):
-    fitness = []
+def cylindre_plus_adapte(id_cylindre, cylindres):
+    fitness = [] 
     for cylindre in cylindres:
         if cylindre > id_cylindre:
             fitness.append(calcul_dist(cylindres[id_cylindre], cylindres[cylindre]))
