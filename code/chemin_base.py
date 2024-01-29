@@ -1,6 +1,7 @@
 import math
 import numpy as np
 import sys
+import matplotlib.pyplot as plt
 
 # cylindre type_cylindre :  coox      cooy      type_cylindre
 #                           1.7554    1.8713    3.0000
@@ -40,6 +41,31 @@ def choix_cylindre_suivant(id_cylindre, cylindres):
 
     return distance_candidat.index(min(distance_candidat))
 
-def echanger_cylindres(cylindres, pos_cylindre, pos_voulue):
-    cylindres[pos_cylindre], cylindres[pos_voulue] = cylindres[pos_voulue], cylindres[pos_cylindre]
+def echanger_cylindres(cylindres, id_cylindre, id_voulue):
+    cylindres[id_cylindre], cylindres[id_voulue] = cylindres[id_voulue], cylindres[id_cylindre]
     return cylindres
+
+def main():
+    cylindres = init_cylindres(recup_data_map())
+    for i in cylindres:
+        echanger_cylindres(cylindres, i, choix_cylindre_suivant(i, cylindres))
+    
+    
+    tColorTab = {1:'red', 2:'green', 3:'blue'}
+    dbRayon = 0.85
+    #affichage des donnees de la carte
+    x=recup_data_map()[:,0]
+    y=recup_data_map()[:,1]
+    t=recup_data_map()[:,2]
+    n = len(x)
+    fig = plt.figure(1)
+    ax = fig.gca()
+    for i in range(n):
+        plt.plot(x[i],y[i],marker='+',color=tColorTab[int(t[i])])
+        c1 = plt.Circle((x[i],y[i]), dbRayon,color=tColorTab[int(t[i])] )
+        ax.annotate(i, (x[i],y[i]))
+        ax.add_patch(c1)
+    plt.show()
+
+if __name__ == '__main__':
+    main()
