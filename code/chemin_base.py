@@ -43,3 +43,7 @@ def cylindre_plus_fit(id_cylindre, cylindres):
 def echanger_cylindres(cylindres, pos_cylindre, pos_voulue):
     cylindres[pos_cylindre], cylindres[pos_voulue] = cylindres[pos_voulue], cylindres[pos_cylindre]
     return cylindres
+
+if __name__ == '__main__':
+    pass
+ 

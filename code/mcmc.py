@@ -2,18 +2,18 @@ import csv
 import random as rd
 import math as mt
 import matplotlib.pyplot as plt
+import numpy as np
+import sys
 
 
 def importerVilles():
-    Villes = []
-    nomColonne = ['MAJ', 'Latitude', 'Longitude']
-
-    with open('selected.csv', newline='') as file:
-        data = csv.DictReader(file, delimiter = ',')
-        for row in data:
-            Villes.append([row[nom] for nom in nomColonne])
-
-    return Villes
+    argc = len(sys.argv)
+    if argc < 2:
+        print("preciser le nom du fichier de donnees en argument...")
+        exit()
+    #lecture du fichier
+    DataMap = np.loadtxt(sys.argv[1], skiprows=1, dtype=float)
+    return(DataMap)
 
 
 def distance(VA, VB, lstV):
@@ -185,10 +185,9 @@ def Tn(N, h = 1):
 #lancement(500)
 
 l, sig0 = MCMC(50000)
-
+"""
 l, sig = MCMC2(50000, sig0)
-
-print(sig)
+"""
+print(sig0)
 print(l)
-
 
