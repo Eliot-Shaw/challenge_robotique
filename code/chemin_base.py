@@ -9,7 +9,7 @@ type_cylindre =[(1.0, 1.0),
                 (3.0, 2.0)]
 
 def init_cylindres(donnees_map):
-    cylindres = [0.0,0.0,0.0] # creations des cylindres avec le bot en 0.0 une cylindre aussi
+    cylindres = [0.0, 0.0, 0.0] # creations des cylindres avec le bot en 0.0 une cylindre aussi
     cylindres.append(donnees_map)
     return cylindres 
 
@@ -19,5 +19,12 @@ def calcul_dist(cylindre1, cylindre2):
     distance_valeur_poids = distance_valeur*type_cylindre[cylindre2[2]-1][1]
     return distance_valeur_poids
 
-def cylindre_plus_adapte(id_cylindre, cylindres):
-    
+def cylindre_plus_fit(id_cylindre, cylindres):
+    fitness = []
+    for cylindre in cylindres:
+        if cylindre > id_cylindre:
+            fitness.append(calcul_dist(cylindres[id_cylindre], cylindres[cylindre]))
+        else: 
+            fitness.append(999999)
+
+    return fitness.index(min(fitness))
