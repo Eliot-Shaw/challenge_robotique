@@ -4,7 +4,7 @@ import sys
 
 # cylindre type_cylindre :  coox      cooy      type_cylindre
 #                           1.7554    1.8713    3.0000
- 
+
 # descrption des types_cylindre de cylindres gain, masse
 type_cylindre =[(1.0, 1.0),
                 (2.0, 2.0),
@@ -30,7 +30,7 @@ def calcul_dist(cylindre1, cylindre2):
     distance_valeur_poids = distance_valeur*type_cylindre[cylindre2[2]-1][1]
     return distance_valeur_poids
 
-def cylindre_plus_fit(id_cylindre, cylindres):
+def choix_cylindre_suivant(id_cylindre, cylindres):
     fitness = []
     for cylindre in cylindres:
         if cylindre > id_cylindre:
