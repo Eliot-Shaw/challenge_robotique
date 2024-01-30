@@ -64,7 +64,7 @@ def main():
     distance = 0
     for i in range(len(cylindres)-1):
         distance += math.sqrt((float(cylindres[i][0]) - float(cylindres[i+1][0]))**2 + (float(cylindres[i][1]) - float(cylindres[i+1][1]))**2)
-    
+    distance += math.sqrt((float(cylindres[0][0]) - float(cylindres[-1][0]))**2 + (float(cylindres[0][1]) - float(cylindres[-1][1]))**2)
     
     tColorTab = {1:'red', 2:'green', 3:'blue'}
     dbRayon = 0.85
