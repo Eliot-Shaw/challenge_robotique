@@ -213,7 +213,7 @@ def MCMC2(N, sigma1, a, b):
     return longueurReelle(sigma0, Villes), sigma0
 
 
-def Tn(N, a, b, h = 1):
+def Tn(N, a = 100, b = 0.99, h = 1):
     '''
     k = 1
     n = N % 100000
@@ -229,7 +229,8 @@ def Tn(N, a, b, h = 1):
 
     return 1/mt.sqrt(k)
     '''
-    return a*(b**N)
+    return 2.5 - np.log(np.log(2.71828182846 + N))
+    # return a*(b**N)
 
     
 #lancement(500)
@@ -237,23 +238,24 @@ def Tn(N, a, b, h = 1):
 sig = chem.faire_chemin()
 
 
-# l, sig0 = MCMC2(5000, sig, a=0, b=0) #iterations et chemin
-for i in range(10):
-    # Open a file in write mode
-    with open('../divers/resultats.txt', 'w') as f:
-        # Write the Python code to the file
-        for i in range(0,100,10):
-            a = 10
-            bz = 0.985+i*0.001
-            l, sig0 = MCMC2(5000, sig, a, bz) #iterations et chemin
-            f.write(f'a={a} --- b={bz} --- l={l}')
+# # l, sig0 = MCMC2(5000, sig, a=0, b=0) #iterations et chemin
+# for i in range(1):
+#     # Open a file in write mode
+#     with open('../divers/resultats.txt', 'w') as f:
+#         # Write the Python code to the file
+#         for i in range(0,150,10):
+#             a = 10
+#             bz = 0.985+i*0.0001
+#             l, sig0 = MCMC2(5000, sig, a, bz) #iterations et chemin
+#             f.write(f'a={a} --- b={bz} --- l={l}\n')
 
 
 # l, sig = MCMC2(50000, sig0)
+l, sig0 = MCMC(1000000)
 
-print(sig) # chemin_base
-print(sig0) # mcmc 
-print(l) # longueur de mcmc
+# print(sig) # chemin_base
+# print(sig0) # mcmc 
+# print(l) # longueur de mcmc
 
 fig = plt.figure(1)
 
