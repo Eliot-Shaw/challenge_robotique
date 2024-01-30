@@ -101,7 +101,7 @@ def longueur(Chemin, Villes, matDis):
 
     return res
 
-def longueurReelle(Chemin, Villes):
+def longueurReelle(Chemin):
     res = 0
     for i in range(len(Chemin)-1):
         VA = Chemin[i]
@@ -158,9 +158,8 @@ def MCMC(N):
         if lsigma0 > lsigma:
             sigma0 = sigma.copy()
             lsigma0 = lsigma
-
-
-    return longueurReelle(sigma0, Villes), sigma0
+            
+    return longueurReelle(sigma0), sigma0
 
 
 def MCMC2(N, sigma1, a, b):
@@ -172,9 +171,9 @@ def MCMC2(N, sigma1, a, b):
     sigma = sigma0.copy()
     T = 100
     for n in range(2,N):
-        #T = abs(mt.sin(n)/(n**1.1))*300
+        T = abs(mt.sin(n)/(n**b))*a
         #T *= 0.999
-        T = Tn(n, a, b)
+        # T = Tn(n, a, b)
         if T == 0.0:
             print(f"b trop bas{b}")
             break
@@ -210,7 +209,7 @@ def MCMC2(N, sigma1, a, b):
             sigma0 = sigma.copy()
             lsigma0 = lsigma
 
-    return longueurReelle(sigma0, Villes), sigma0
+    return longueurReelle(sigma0), sigma0
 
 
 def Tn(N, a = 100, b = 0.99, h = 1):
@@ -257,12 +256,13 @@ sig = chem.faire_chemin()
 #     f.write(f'a={a} --- b={bz} --- l={l}\n')
 
 
-l, sig0 = MCMC2(5000, sig, a=12, b=0.996)
+l, sig0 = MCMC2(50000, sig, a=300, b=1.1)
 # l, sig0 = MCMC(1000000)
 
 # print(sig) # chemin_base
 # print(sig0) # mcmc 
-# print(l) # longueur de mcmc
+print(f"longueur reelle mcmc : {longueurReelle(sig0)}") # longueur de mcmc
+print(f"longueur reelle mcmc : {longueurReelle(sig)}") # longueur de chemin_base
 
 fig = plt.figure(1)
 
