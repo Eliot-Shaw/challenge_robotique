@@ -238,11 +238,11 @@ sig = chem.faire_chemin()
 
 
 # l, sig0 = MCMC2(5000, sig, a=0, b=0) #iterations et chemin
-# Open a file in write mode
-with open('../divers/resultats.txt', 'w') as f:
-    # Write the Python code to the file
-    for i in range(0,100,10):
-        for i in range(10):
+for i in range(10):
+    # Open a file in write mode
+    with open('../divers/resultats.txt', 'w') as f:
+        # Write the Python code to the file
+        for i in range(0,100,10):
             a = 10
             bz = 0.985+i*0.001
             l, sig0 = MCMC2(5000, sig, a, bz) #iterations et chemin
