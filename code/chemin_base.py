@@ -37,8 +37,9 @@ def choix_cylindre_suivant(id_cylindre):
             distance_candidat.append(calcul_dist(id_cylindre, i))
         else: 
             distance_candidat.append(999999)
-
-    return distance_candidat.index(min(distance_candidat))
+    restultat = distance_candidat.index(min(distance_candidat))
+    print(f"resultat choix_cylindre_suivant pour {id_cylindre} est {restultat}")
+    return restultat
 
 def echanger_cylindres(id_cylindre, id_voulue):
     cylindres[id_cylindre], cylindres[id_voulue] = cylindres[id_voulue], cylindres[id_cylindre]
