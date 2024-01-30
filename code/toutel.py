@@ -22,10 +22,11 @@ def main():
     for instruction in instructions:
         sleep(1)
         if(instruction[:4]) == "TURN":
-            tutel.left(float(instruction[5:]) / np.pi * 180)
+            tutel.left((float(instruction[5:]) / np.pi) * 180)
             
         
         if(instruction[:2]) == "GO":
+            print((float(instruction[3:]))*5)
             tutel.forward(float(instruction[3:]))
 
     t.mainloop()
