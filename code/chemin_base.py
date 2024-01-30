@@ -59,7 +59,7 @@ def faire_chemin():
 
 
 def main():
-    
+    faire_chemin()
     
     distance = 0
     for i in range(len(cylindres)-1):
@@ -90,4 +90,4 @@ def main():
     plt.show()
 
 if __name__ == '__main__':
-    pass
+    main()
