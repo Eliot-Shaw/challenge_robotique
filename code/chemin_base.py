@@ -46,7 +46,8 @@ def echanger_cylindres(id_cylindre, id_voulue):
     print(f"on cherche à échanger {cylindres[id_cylindre]} {cylindres[id_voulue]}")
     print("--- cylindres avant :")
     print(cylindres)
-    temp = cylindres[id_cylindre]
+    temp = np.array(cylindres[id_cylindre])
+    print(temp)
     cylindres[id_cylindre] = cylindres[id_voulue]
     cylindres[id_voulue] = temp
     print("--- cylindres après :")
@@ -55,9 +56,10 @@ def echanger_cylindres(id_cylindre, id_voulue):
 
 def main():
     init_cylindres(recup_data_map())
-
-    for i in range(len(cylindres)):
-        echanger_cylindres(i, choix_cylindre_suivant(i))
+    print(len(cylindres))
+    for i in range(1,len(cylindres)):
+        print(i)
+        echanger_cylindres(i, choix_cylindre_suivant(i+1))
     
     print(cylindres)
     
@@ -77,7 +79,7 @@ def main():
         ax.add_patch(c1)
     
 
-    for i in range(len(cylindres)):
+    for i in range(1,len(cylindres)):
         x=cylindres[:,0]
         y=cylindres[:,1]
         ax.annotate(i, (x[i],y[i]))
