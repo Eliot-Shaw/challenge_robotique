@@ -65,7 +65,7 @@ def main():
         distance += math.sqrt((float(cylindres[i][0]) - float(cylindres[i+1][0]))**2 + (float(cylindres[i][1]) - float(cylindres[i+1][1]))**2)
     distance += math.sqrt((float(cylindres[0][0]) - float(cylindres[-1][0]))**2 + (float(cylindres[0][1]) - float(cylindres[-1][1]))**2)
     
-    tColorTab = {1:'red', 2:'green', 3:'blue'}
+    tColorTab = {1:'yellow', 2:'orange', 3:'red'}
     dbRayon = 0.85
     #affichage des donnees de la carte
     x=recup_data_map()[:,0]
