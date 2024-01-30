@@ -40,6 +40,7 @@ def main():
         tourner_point(point[0], point[1], x_robot, y_robot)
         go_point(point[0], point[1], x_robot, y_robot)
     ecrire_plan_txt(plan_robot, plan)
+    mcmc.afficher()
     
 if __name__ == '__main__':
     main()
