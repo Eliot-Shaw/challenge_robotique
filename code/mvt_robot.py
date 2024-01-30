@@ -16,21 +16,23 @@ def ecrire_plan_txt(path_plan, directions):
     with open(path_plan, 'w') as f:
     # Write the Python code to the file
         for i in range(len(directions)):
-            if directions[0] == 'GO':
-                f.write(f'GO {directions[1]}\n')
-            elif directions[0] == 'TURN':
-                f.write(f'TURN {directions[1]}\n')
-            elif directions[0] == 'STOP':
+            if directions[i][0] == 'GO':
+                f.write(f'GO {directions[i][1]}\n')
+            elif directions[i][0] == 'TURN':
+                f.write(f'TURN {directions[i][1]}\n')
+            elif directions[i][0] == 'STOP':
                 pass
             f.write(f'STOP\n')
         f.write(f'FINISH')
             
 def ajout_ordre_plan(ordre, valeur):
+    global plan
     plan = np.concatenate((plan, np.array([[ordre, valeur]])), axis=0)
 
 def init_plan():
     global plan
-    plan = np.array()
+    plan = np.empty((1,2))
+    print(type(plan))
     print("init plan ok")
 
 def main():
@@ -43,8 +45,12 @@ def main():
     print("###########################################################################")
     plan_robot = '../divers/plan_robot.txt'
     init_plan()
-    for point in ordre:
+    print("LE PLAN")
+    print(plan)
+    for point in ordre[1:]:
         tourner_point(point[0], point[1], x_robot, y_robot)
         go_point(point[0], point[1], x_robot, y_robot)
     ecrire_plan_txt(plan_robot, plan)
     
+if __name__ == '__main__':
+    main()
