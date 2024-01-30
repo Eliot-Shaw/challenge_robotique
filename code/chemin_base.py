@@ -42,14 +42,15 @@ def choix_cylindre_suivant(id_cylindre):
     return restultat
 
 def echanger_cylindres(id_cylindre, id_voulue):
-    temp = np.array(cylindres[id_cylindre])
-    cylindres[id_cylindre] = cylindres[id_voulue]
-    cylindres[id_voulue] = temp
+    if id_cylindre != 0:
+        temp = np.array(cylindres[id_cylindre])
+        cylindres[id_cylindre] = cylindres[id_voulue]
+        cylindres[id_voulue] = temp
     return cylindres
 
 def main():
     init_cylindres(recup_data_map())
-    for i in range(1,len(cylindres)):
+    for i in range(len(cylindres)):
         echanger_cylindres(i, choix_cylindre_suivant(i+1))
     
     
