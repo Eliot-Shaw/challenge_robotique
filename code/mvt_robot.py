@@ -5,10 +5,12 @@ import numpy as np
 def go_point(x_point, y_point, x_robot, y_robot):
     distance = math.sqrt((x_point-x_robot)**2+(y_point-y_robot)**2)
     ajout_ordre_plan('GO', distance)
+    print(f"distance ajoutée: {distance}")
 
 def tourner_point(x_point, y_point, x_robot, y_robot):
     angle = math.acos((y_point-y_robot)/math.sqrt((x_point-x_robot)**2+(y_point-y_robot)**2))
     ajout_ordre_plan('TURN', angle) # vérifier si tourne dans le bon sens en fonction du +/-, sinon inverser calcul degré
+    print(f"angle ajouté: {angle}")
 
 def ecrire_plan_txt(path_plan, directions):
     with open(path_plan, 'w') as f:
@@ -29,11 +31,16 @@ def ajout_ordre_plan(ordre, valeur):
 def init_plan():
     global plan
     plan = np.array()
-    
+    print("init plan ok")
+
 def main():
+    print("bonjour main")
     x_robot = 0.0
     y_robot = 0.0
     ordre = mcmc.sig0
+    print("ordre récup:")
+    print(ordre)
+    print("###########################################################################")
     plan_robot = '../divers/plan_robot.txt'
     init_plan()
     for point in ordre:
