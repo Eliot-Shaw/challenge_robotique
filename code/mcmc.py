@@ -11,26 +11,30 @@ def importerVilles():
         print("preciser le nom du fichier de donnees en argument...")
         exit()
     #lecture du fichier
-    DataMap = np.loadtxt(sys.argv[1], skiprows=1, dtype=float)
+    DataMap = np.loadtxt(sys.argv[1], dtype=float)
     return(DataMap)
 
+def distance(VA, VB):
 
-def distance(VA, VB, lstV):
-
-    iA = 0
-    iB = 0
-    for i in range(len(lstV)):
-        if lstV[i].all() == VA.all():
-            iA = i
-        elif lstV[i].all() == VB.all():
-            iB = i
+    # iA = 0
+    # iB = 0
+    # for i in range(len(lstV)):
+    #     if np.array_equal(lstV[i],VA):
+    #         iA = i
+    #     elif np.array_equal(lstV[i],VB):
+    #         iB = i
     
 
-    lat1 = float(lstV[iA][0])
-    lat2 = float(lstV[iB][0])
-    lon1 = float(lstV[iA][1])
-    lon2 = float(lstV[iB][1])
+    # lat1 = float(lstV[iA][0])
+    # lat2 = float(lstV[iB][0])
+    # lon1 = float(lstV[iA][1])
+    # lon2 = float(lstV[iB][1])
 
+
+    lat1 = float(VA[0])
+    lat2 = float(VB[0])
+    lon1 = float(VA[1])
+    lon2 = float(VB[1])
 
     return mt.sqrt((lat1 - lat2)**2 + (lon1 - lon2)**2)
 
@@ -41,7 +45,7 @@ def calculMatriceDis(lstV):
     Mat = [ [ None for y in range( n ) ] for x in range( n ) ]
     for i in range(n):
         for j in range(n):
-            Mat[i][j] = distance(lstV[i], lstV[j], lstV)
+            Mat[i][j] = distance(lstV[i], lstV[j])
 
     return Mat
 
@@ -49,9 +53,9 @@ def distanceAvecMat(VA, VB, lstV, matDis):
     iA = 0
     iB = 0
     for i in range(len(lstV)):
-        if lstV[i].all() == VA.all():
+        if np.array_equal(lstV[i],VA):
             iA = i
-        elif lstV[i].all() == VB.all():
+        elif np.array_equal(lstV[i],VB):
             iB = i
 
     return matDis[iA][iB]
@@ -71,7 +75,7 @@ def longueur(Chemin, Villes, matDis):
 
 
 def MCMC(N):
-    Villes = importerVilles()
+    Villes = np.concatenate((np.array([[0, 0, 0]]),importerVilles()), axis=0)
     m = len(Villes)
     matDistance = calculMatriceDis(Villes)
     sigma0 = np.array([Villes[i] for i in range(m)])
@@ -90,9 +94,12 @@ def MCMC(N):
             iB = rd.randint(0, m-1)
 
         sigmaPrime = sigma.copy()
-        temp = sigmaPrime[iA]
-        sigmaPrime[iA] = sigmaPrime[iB]
-        sigmaPrime[iB] = temp
+        # temp = sigmaPrime[iA]
+        # sigmaPrime[iA] = sigmaPrime[iB]
+        # sigmaPrime[iB] = temp
+
+       
+        sigmaPrime[[iA, iB]] = sigmaPrime[[iB, iA]]
 
         lsigma = longueur(sigma, Villes, matDistance)
         deltaLong = lsigma - longueur(sigmaPrime, Villes, matDistance)
@@ -113,11 +120,12 @@ def MCMC(N):
             sigma0 = sigma.copy()
             lsigma0 = lsigma
 
+
     return longueur(sigma0, Villes, matDistance), sigma0
 
 
 def MCMC2(N, sigma1):
-    Villes = importerVilles()
+    Villes = np.concatenate([[0, 0, 0]],importerVilles())
     m = len(Villes)
     matDistance = calculMatriceDis(Villes)
     sigma0 = sigma1
@@ -135,7 +143,7 @@ def MCMC2(N, sigma1):
             iB = rd.randint(0, m-1)
 
         sigmaPrime = sigma.copy()
-        temp = sigmaPrime[iA]
+        temp = np.array(sigmaPrime[iA])
         sigmaPrime[iA] = sigmaPrime[iB]
         sigmaPrime[iB] = temp
 
@@ -157,8 +165,6 @@ def MCMC2(N, sigma1):
         if lsigma0 > lsigma:
             sigma0 = sigma.copy()
             lsigma0 = lsigma
-
-    print(T)
 
     return longueur(sigma0, Villes, matDistance), sigma0
 
@@ -184,7 +190,7 @@ def Tn(N, h = 1):
     
 #lancement(500)
 
-l, sig0 = MCMC(500)
+l, sig0 = MCMC(5000)
 
 # l, sig = MCMC2(50000, sig0)
 
@@ -197,7 +203,7 @@ fig = plt.figure(1)
 tColorTab = {1:'red', 2:'green', 3:'blue'}
 dbRayon = 0.85
 
-DataMap = np.loadtxt(sys.argv[1], skiprows=1, dtype=float)
+DataMap = np.loadtxt(sys.argv[1], dtype=float)
 #affichage des donnees de la carte
 x=DataMap[:,0]
 y=DataMap[:,1]
