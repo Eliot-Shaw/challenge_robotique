@@ -10,7 +10,8 @@ def tourner_point(y_point, y_robot, x_point, x_robot):
     TURN angle # vérifier si tourne dans le bon sens en fonction du +/-, sinon inverser calcul degré
 
 
-def ecrire_plan(path_plan, directions):
+
+def ecrire_plan_txt(path_plan, directions):
     with open(path_plan, 'w') as f:
     # Write the Python code to the file
         for i in range(len(directions)):
@@ -22,3 +23,6 @@ def ecrire_plan(path_plan, directions):
             elif directions[0] == 'FINISH':
                 f.write(f'STOP\n')
                 f.write(f'FINISH')
+
+def ajout_ordre_plan(ordre, valeur):
+    plan = np.concatenate((plan, np.array([[ordre, valeur]])), axis=0)
