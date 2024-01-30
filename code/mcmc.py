@@ -213,7 +213,7 @@ def MCMC2(N, sigma1, a, b):
     return longueurReelle(sigma0, Villes), sigma0
 
 
-def Tn(N, a, b, h = 1):
+def Tn(N, a = 100, b = 0.99, h = 1):
     '''
     k = 1
     n = N % 100000
@@ -229,7 +229,8 @@ def Tn(N, a, b, h = 1):
 
     return 1/mt.sqrt(k)
     '''
-    return a*(b**N)
+    return 2.5 - np.log(np.log(2.71828182846 + N))
+    # return a*(b**N)
 
     
 #lancement(500)
@@ -258,6 +259,7 @@ with open('../divers/resultats.txt', 'w') as f:
 
 
 # l, sig = MCMC2(50000, sig0)
+l, sig0 = MCMC(1000000)
 
 # print(sig) # chemin_base
 # print(sig0) # mcmc 
