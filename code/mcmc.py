@@ -181,7 +181,7 @@ def Tn(N, h = 1):
     '''
     return 10*(0.999**N)
 
-
+    
 #lancement(500)
 
 l, sig0 = MCMC(500)
@@ -210,7 +210,7 @@ for i in range(n):
     c1 = plt.Circle((x[i],y[i]), dbRayon,color=tColorTab[int(t[i])] )
     ax.add_patch(c1)
 
-plt.plot(sig0[:][0], sig0[:][1])
+plt.plot(sig0.T[0], sig0.T[1])
 plt.show()
 
 # Villes = importerVilles()
