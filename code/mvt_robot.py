@@ -2,8 +2,8 @@ import mcmc
 import math
 import numpy as np
 
-def go_point(point_x, point_y):
-    distance = distance(robot, point)
+def go_point(y_point, y_robot, x_point, x_robot):
+    distance = math.sqrt((x_point-x_robot)**2+(y_point-y_robot)**2)
     ajout_ordre_plan('GO', distance)
 
 def tourner_point(y_point, y_robot, x_point, x_robot):
