@@ -163,7 +163,7 @@ def MCMC(N):
     return longueurReelle(sigma0, Villes), sigma0
 
 
-def MCMC2(N, sigma1):
+def MCMC2(N, sigma1, a, b):
     Villes = np.concatenate((np.array([[0, 0, 0]]),importerVilles()), axis=0)
     m = len(Villes)
     matDistance = calculMatriceDis(Villes)
@@ -174,7 +174,7 @@ def MCMC2(N, sigma1):
     for n in range(2,N):
         #T = abs(mt.sin(n)/(n**1.1))*300
         #T *= 0.999
-        T = Tn(n)
+        T = Tn(n, a, b)
 
         iA = rd.randint(0, m-1)
         iB = rd.randint(0, m-1)
@@ -211,7 +211,7 @@ def MCMC2(N, sigma1):
     return longueurReelle(sigma0, Villes), sigma0
 
 
-def Tn(N, h = 1):
+def Tn(N, a, b, h = 1):
     '''
     k = 1
     n = N % 100000
@@ -227,20 +227,27 @@ def Tn(N, h = 1):
 
     return 1/mt.sqrt(k)
     '''
-    return 10*(0.99**N)
+    return a*(b**N)
 
     
 #lancement(500)
 
 sig = chem.faire_chemin()
 
-l, sig0 = MCMC2(5000, sig)
+# l, sig0 = MCMC2(5000, sig, a=0, b=0) #iterations et chemin
+# Open a file in write mode
+with open('../divers/resultats.txt', 'w') as f:
+    # Write the Python code to the file
+    for i in range(0,100,10):
+        l, sig0 = MCMC2(50000, sig, a=10, b=0.99+i*0.001) #iterations et chemin
+        f.write('a={a} --- b={0.99+i*0.001} --- l={l}')
+
 
 # l, sig = MCMC2(50000, sig0)
 
-print(sig)
-print(sig0)
-print(l)
+print(sig) # chemin_base
+print(sig0) # mcmc 
+print(l) # longueur de mcmc
 
 fig = plt.figure(1)
 
