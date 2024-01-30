@@ -2,12 +2,19 @@ import mcmc
 import math
 import numpy as np
 
+
+theta_robot = 0.0
+
 def go_point(x_point, y_point, x_robot, y_robot):
     distance = math.sqrt((x_point-x_robot)**2+(y_point-y_robot)**2)
     ajout_ordre_plan('GO', distance)
 
 def tourner_point(x_point, y_point, x_robot, y_robot):
-    angle = math.acos((y_point-y_robot)/math.sqrt((x_point-x_robot)**2+(y_point-y_robot)**2))
+    global theta_robot
+    angle_point = math.atan2((y_point-y_robot),(x_point-x_robot))
+    angle = angle_point - theta_robot
+    angle = (angle+math.pi)%(2*math.pi)-math.pi
+    theta_robot += angle
     ajout_ordre_plan('TURN', angle) # vérifier si tourne dans le bon sens en fonction du +/-, sinon inverser calcul degré
 
 def ecrire_plan_txt(path_plan, directions):

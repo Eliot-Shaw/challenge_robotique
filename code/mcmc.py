@@ -256,7 +256,7 @@ sig = chem.faire_chemin()
 #     f.write(f'a={a} --- b={bz} --- l={l}\n')
 
 
-l, sig0 = MCMC2(50000, sig, a=300, b=1.1)
+l, sig0 = MCMC2(5000, sig, a=300, b=1.1)
 # l, sig0 = MCMC(1000000)
 
 # print(sig) # chemin_base
