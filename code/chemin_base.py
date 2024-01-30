@@ -17,12 +17,13 @@ def recup_data_map():
         print("preciser le nom du fichier de donnees en argument...")
         exit()
     #lecture du fichier
-    DataMap = np.loadtxt(sys.argv[1], skiprows=1, dtype=float)
+    DataMap = np.loadtxt(sys.argv[1], skiprows=0, dtype=float)
     return DataMap
 
 def init_cylindres(donnees_map):
     global cylindres 
     cylindres = np.concatenate((np.array([[0.0, 0.0, 0.0]]), donnees_map), axis=0) # creations des cylindres avec le bot en 0.0 une cylindre aussi
+    print(cylindres)
 
 def calcul_dist(id1, id2):
     distance_raw = math.sqrt((float(cylindres[id1][0]) - float(cylindres[id2][0]))**2 + (float(cylindres[id1][1]) - float(cylindres[id2][1]))**2)
@@ -41,27 +42,15 @@ def choix_cylindre_suivant(id_cylindre):
     return restultat
 
 def echanger_cylindres(id_cylindre, id_voulue):
-    print("--------------------------------------------------------------")
-    print(f"on cherche à échanger id{id_cylindre} et id{id_voulue}")
-    print(f"on cherche à échanger {cylindres[id_cylindre]} {cylindres[id_voulue]}")
-    print("--- cylindres avant :")
-    print(cylindres)
     temp = np.array(cylindres[id_cylindre])
-    print(temp)
     cylindres[id_cylindre] = cylindres[id_voulue]
     cylindres[id_voulue] = temp
-    print("--- cylindres après :")
-    print(cylindres)
     return cylindres
 
 def main():
     init_cylindres(recup_data_map())
-    print(len(cylindres))
     for i in range(1,len(cylindres)):
-        print(i)
         echanger_cylindres(i, choix_cylindre_suivant(i+1))
-    
-    print(cylindres)
     
     
     tColorTab = {1:'red', 2:'green', 3:'blue'}
@@ -79,10 +68,11 @@ def main():
         ax.add_patch(c1)
     
 
-    for i in range(1,len(cylindres)):
+    for i in range(len(cylindres)):
         x=cylindres[:,0]
         y=cylindres[:,1]
         ax.annotate(i, (x[i],y[i]))
+    print(cylindres)
     plt.show()
 
 if __name__ == '__main__':
