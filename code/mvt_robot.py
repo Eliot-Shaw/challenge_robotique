@@ -5,10 +5,10 @@ def go_point(point_x, point_y):
     distance = distance(robot, point)
     ajout_ordre_plan('GO', distance)
 
-def tourner_point(point_x, point_y):
-    calcul_degré()
-    angle = angle(robot, point) # vérifier si tourne dans le bon sens en fonction du +/-, sinon inverser calcul degré
-    ajout_ordre_plan('TURN', angle)
+def tourner_point(y_point, y_robot, x_point, x_robot):
+    angle = math.acos((y_point-y_robot)/math.sqrt((x_point-x_robot)**2+(y_point-y_robot)**2))
+    ajout_ordre_plan('TURN', angle) # vérifier si tourne dans le bon sens en fonction du +/-, sinon inverser calcul degré
+
 
 def calcul_degré(orientation_robot):
     orientation_to_point = *
