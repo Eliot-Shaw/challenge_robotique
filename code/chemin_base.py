@@ -46,7 +46,9 @@ def echanger_cylindres(id_cylindre, id_voulue):
     print(f"on cherche à échanger {cylindres[id_cylindre]} {cylindres[id_voulue]}")
     print("--- cylindres avant :")
     print(cylindres)
-    cylindres[id_cylindre], cylindres[id_voulue] = cylindres[id_voulue], cylindres[id_cylindre]
+    temp = cylindres[id_cylindre]
+    cylindres[id_cylindre] = cylindres[id_voulue]
+    cylindres[id_voulue] = temp
     print("--- cylindres après :")
     print(cylindres)
     return cylindres
