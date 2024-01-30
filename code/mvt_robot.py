@@ -2,12 +2,13 @@ import mcmc
 import math
 
 def go_point(point_x, point_y):
-    GO distance(robot, point)
-    STOP
+    distance = distance(robot, point)
+    ajout_ordre_plan('GO', distance)
 
 def tourner_point(point_x, point_y):
     calcul_degré()
-    TURN angle(robot, point) # vérifier si tourne dans le bon sens en fonction du +/-, sinon inverser calcul degré
+    angle = angle(robot, point) # vérifier si tourne dans le bon sens en fonction du +/-, sinon inverser calcul degré
+    ajout_ordre_plan('TURN', angle)
 
 def calcul_degré(orientation_robot):
     orientation_to_point = *
