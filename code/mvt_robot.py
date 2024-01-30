@@ -23,7 +23,6 @@ def ecrire_plan_txt(path_plan, directions):
             f.write(f'STOP\n')
         f.write(f'FINISH')
             
-
 def ajout_ordre_plan(ordre, valeur):
     plan = np.concatenate((plan, np.array([[ordre, valeur]])), axis=0)
 
