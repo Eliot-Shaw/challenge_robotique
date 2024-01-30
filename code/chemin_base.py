@@ -55,6 +55,7 @@ def faire_chemin():
     init_cylindres(recup_data_map())
     for i in range(len(cylindres)):
         echanger_cylindres(i+1, choix_cylindre_suivant(i))
+    return cylindres
 
 
 def main():
