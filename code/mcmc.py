@@ -238,7 +238,6 @@ def Tn(N, a = 100, b = 0.99, h = 1):
 sig = chem.faire_chemin()
 
 # VRAI CODE
-# l, sig0 = MCMC2(5000, sig, a=0, b=0) #iterations et chemin
 # Open a file in write mode
 # with open('../divers/resultats.txt', 'w') as f:
 #     # Write the Python code to the file
@@ -250,15 +249,15 @@ sig = chem.faire_chemin()
 #                 f.write(f'a={a} --- b={bz} --- l={l}\n')
 
 #FAUX CODE DE TEST
-with open('../divers/resultats.txt', 'w') as f:
-    # Write the Python code to the file
-    a = 10
-    bz = 0.996
-    l, sig0 = 1,sig
-    f.write(f'a={a} --- b={bz} --- l={l}\n')
+# with open('../divers/resultats.txt', 'w') as f:
+#     # Write the Python code to the file
+#     a = 10
+#     bz = 0.996
+#     l, sig0 = 1,sig
+#     f.write(f'a={a} --- b={bz} --- l={l}\n')
 
 
-# l, sig = MCMC2(50000, sig0)
+l, sig0 = MCMC2(5000, sig, a=12, b=0.996)
 # l, sig0 = MCMC(1000000)
 
 # print(sig) # chemin_base
@@ -268,7 +267,7 @@ with open('../divers/resultats.txt', 'w') as f:
 fig = plt.figure(1)
 
 
-tColorTab = {1:'red', 2:'green', 3:'blue'}
+tColorTab = {1:'yellow', 2:'orange', 3:'red'}
 dbRayon = 0.85
 
 DataMap = np.loadtxt(sys.argv[1], dtype=float)
