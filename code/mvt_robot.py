@@ -1,5 +1,6 @@
 import mcmc
 import math
+import numpy as np
 
 def go_point(point_x, point_y):
     GO distance(robot, point)
