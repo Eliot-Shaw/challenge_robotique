@@ -29,7 +29,7 @@ def ajout_ordre_plan(ordre, valeur):
 def init_plan():
     global plan
     plan = np.array()
-
+    
 def main():
     x_robot = 0.0
     y_robot = 0.0

@@ -1,12 +1,13 @@
+import mcmc
 import math
 import numpy as np
 import turtle
 
-def go_point(y_point, y_robot, x_point, x_robot):
+def go_point(x_point, y_point, x_robot, y_robot):
     distance = math.sqrt((x_point-x_robot)**2+(y_point-y_robot)**2)
     ajout_ordre_plan('GO', distance)
 
-def tourner_point(y_point, y_robot, x_point, x_robot):
+def tourner_point(x_point, y_point, x_robot, y_robot):
     angle = math.acos((y_point-y_robot)/math.sqrt((x_point-x_robot)**2+(y_point-y_robot)**2))
     ajout_ordre_plan('TURN', angle) # vérifier si tourne dans le bon sens en fonction du +/-, sinon inverser calcul degré
 
@@ -29,8 +30,19 @@ def ajout_ordre_plan(ordre, valeur):
 def init_plan():
     global plan
     plan = np.array()
-
-tutel = turtle.Turtle()
-tutel.pd()
-tutel.forward(25)
-turtle.mainloop()
+    
+def main():
+    x_robot = 0.0
+    y_robot = 0.0
+    ordre = mcmc.sig0
+    plan_robot = '../divers/plan_robot.txt'
+    init_plan()
+    for point in ordre:
+        tourner_point(point[0], point[1], x_robot, y_robot)
+        go_point(point[0], point[1], x_robot, y_robot)
+    ecrire_plan_txt(plan_robot, plan)
+    
+    tutel = turtle.Turtle()
+    tutel.pd()
+    tutel.forward(25)
+    turtle.mainloop()
