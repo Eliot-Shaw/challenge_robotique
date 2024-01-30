@@ -39,10 +39,13 @@ def choix_cylindre_suivant(id_cylindre):
         else: 
             distance_candidat.append(999999)
     restultat = distance_candidat.index(min(distance_candidat))
+    print(f"choix_cylindre_suivant pour {id_cylindre}")
+    print(distance_candidat)
+    print(restultat)
     return restultat
 
 def echanger_cylindres(id_cylindre, id_voulue):
-    if id_cylindre != 0:
+    if id_cylindre != 21:
         temp = np.array(cylindres[id_cylindre])
         cylindres[id_cylindre] = cylindres[id_voulue]
         cylindres[id_voulue] = temp
@@ -51,7 +54,7 @@ def echanger_cylindres(id_cylindre, id_voulue):
 def main():
     init_cylindres(recup_data_map())
     for i in range(len(cylindres)):
-        echanger_cylindres(i, choix_cylindre_suivant(i+1))
+        echanger_cylindres(i+1, choix_cylindre_suivant(i))
     
     
     tColorTab = {1:'red', 2:'green', 3:'blue'}
