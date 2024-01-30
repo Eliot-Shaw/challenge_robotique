@@ -28,7 +28,6 @@ def ajout_ordre_plan(ordre, valeur):
 def init_plan():
     global plan
     plan = np.empty((1,2))
-    print(type(plan))
 
 def main():
     x_robot = 0.0
