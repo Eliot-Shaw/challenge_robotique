@@ -68,7 +68,8 @@ def main():
         c1 = plt.Circle((x[i],y[i]), dbRayon,color=tColorTab[int(t[i])] )
         ax.add_patch(c1)
     
-    for i in range(n):
+
+    for i in range(len(cylindres)):
         x=cylindres[:,0]
         y=cylindres[:,1]
         ax.annotate(i, (x[i],y[i]))
