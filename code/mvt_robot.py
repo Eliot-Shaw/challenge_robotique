@@ -18,8 +18,6 @@ def ecrire_plan_txt(path_plan, directions):
                 f.write(f'GO {directions[i][1]}\n')
             elif directions[i][0] == 'TURN':
                 f.write(f'TURN {directions[i][1]}\n')
-            elif directions[i][0] == 'STOP':
-                pass
             f.write(f'STOP\n')
         f.write(f'FINISH')
             
