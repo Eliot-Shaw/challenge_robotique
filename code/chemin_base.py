@@ -23,7 +23,6 @@ def recup_data_map():
 def init_cylindres(donnees_map):
     global cylindres 
     cylindres = np.concatenate((np.array([[0.0, 0.0, 0.0]]), donnees_map), axis=0) # creations des cylindres avec le bot en 0.0 une cylindre aussi
-    print(cylindres)
 
 def calcul_dist(id1, id2):
     distance_raw = math.sqrt((float(cylindres[id1][0]) - float(cylindres[id2][0]))**2 + (float(cylindres[id1][1]) - float(cylindres[id2][1]))**2)
@@ -39,9 +38,9 @@ def choix_cylindre_suivant(id_cylindre):
         else: 
             distance_candidat.append(999999)
     restultat = distance_candidat.index(min(distance_candidat))
-    print(f"choix_cylindre_suivant pour {id_cylindre}")
-    print(distance_candidat)
-    print(restultat)
+    # print(f"choix_cylindre_suivant pour {id_cylindre}")
+    # print(distance_candidat)
+    # print(restultat)
     return restultat
 
 def echanger_cylindres(id_cylindre, id_voulue):
@@ -86,7 +85,7 @@ def main():
         y=cylindres[:,1]
         ax.annotate(i, (x[i],y[i]))
     plt.plot(x, y)
-    print(distance)
+    # print(distance)
     plt.show()
 
 if __name__ == '__main__':
