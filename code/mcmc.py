@@ -259,7 +259,7 @@ with open('../divers/resultats.txt', 'w') as f:
 
 
 # l, sig = MCMC2(50000, sig0)
-l, sig0 = MCMC(1000000)
+# l, sig0 = MCMC(1000000)
 
 # print(sig) # chemin_base
 # print(sig0) # mcmc 
