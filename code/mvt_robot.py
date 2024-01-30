@@ -32,6 +32,8 @@ def init_plan():
     plan = np.array()
 
 def main():
+    x_robot = 0.0
+    y_robot = 0.0
     ordre = mcmc.sig0
     plan_robot = '../divers/plan_robot.txt'
     init_plan()
