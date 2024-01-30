@@ -51,10 +51,14 @@ def echanger_cylindres(id_cylindre, id_voulue):
         cylindres[id_voulue] = temp
     return cylindres
 
-def main():
+def faire_chemin():
     init_cylindres(recup_data_map())
     for i in range(len(cylindres)):
         echanger_cylindres(i+1, choix_cylindre_suivant(i))
+
+
+def main():
+    
     
     distance = 0
     for i in range(len(cylindres)-1):
