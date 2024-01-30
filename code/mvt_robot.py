@@ -13,8 +13,9 @@ def tourner_point(x_point, y_point, x_robot, y_robot):
     global theta_robot
     angle_point = math.atan2((y_point-y_robot),(x_point-x_robot))
     angle = angle_point - theta_robot
-    angle = (angle+math.pi)%(2*math.pi)-math.pi
+    angle = (angle)%(2*math.pi)-math.pi
     theta_robot += angle
+    angle = angle*180/math.pi
     ajout_ordre_plan('TURN', angle) # vérifier si tourne dans le bon sens en fonction du +/-, sinon inverser calcul degré
 
 def ecrire_plan_txt(path_plan, directions):
