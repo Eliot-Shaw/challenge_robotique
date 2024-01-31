@@ -76,13 +76,13 @@ def main():
     instructions = recup_data_map()
 
     for instruction in instructions:
-        sleep(1)
+        sleep(0.01)
         if(instruction[:4]) == "TURN":
             tutel.left(float(instruction[5:]))
             
         
         if(instruction[:2]) == "GO":
-            tutel.forward(float(instruction[2:])*10)
+            tutel.forward(float(instruction[2:])*5)
 
     t.mainloop()
 

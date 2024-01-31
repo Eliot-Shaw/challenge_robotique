@@ -11,14 +11,11 @@ def go_point(x_point, y_point, x_robot, y_robot):
 
 def tourner_point(x_point, y_point, x_robot, y_robot):
     global theta_robot
-    angle_tribute = math.atan2(y_point, x_point)
-    print(f"angle_tribute : {angle_tribute}")
-    angle_point = math.atan2((y_point),(x_point))
+    angle_point = math.atan2((y_point-y_robot),(x_point-x_robot))
     print(f"angle point : {angle_point}")
     angle = angle_point - theta_robot
-    angle = (angle)%(2*math.pi)-math.pi
     print(f"angle: {angle}")
-    theta_robot += angle_point
+    theta_robot = angle_point
     print(f"theta_robot : {theta_robot}")
     angle = angle*180/math.pi
     ajout_ordre_plan('TURN', angle) # vérifier si tourne dans le bon sens en fonction du +/-, sinon inverser calcul degré
@@ -53,34 +50,16 @@ def angle_entre_vecteurs(vector_1, vector_2):
 
     return angle
 
-def tourner_2_point(point_avant, point_robot, point):
-    
-    vecteur_avant = np.array([point_robot[0] - point_avant[0], point_robot[1] - point_avant[1]])
-    vecteur = np.array([point[0] - point_robot[0], point[1] - point_robot[1]])
-    
-    if(np.array_equal(vecteur_avant, np.array([0, 0]))):
-        vecteur_avant = np.array([0, 1])
-
-    angle = angle_entre_vecteurs(vecteur_avant, vecteur)
-
-    angle = angle*180/math.pi
-    ajout_ordre_plan('TURN', angle) # vérifier si tourne dans le bon sens en fonction du +/-, sinon inverser calcul degré
-
-
 def main():
     x_robot = 0.0
     y_robot = 0.0
-    dernier_point = [0, 0]
     ordre = mcmc.sig0
     plan_robot = '../divers/plan_robot.txt'
     init_plan()
     print(plan)
     for point in ordre[1:]:
-        tourner_2_point(dernier_point, np.array([x_robot, y_robot]), point[:2])
-        # tourner_point(point[0], point[1], x_robot, y_robot)
+        tourner_point(point[0], point[1], x_robot, y_robot)
         go_point(point[0], point[1], x_robot, y_robot)
-        
-        dernier_point = np.array([x_robot, y_robot])
         x_robot, y_robot = point[0], point[1]
     ecrire_plan_txt(plan_robot, plan)
     mcmc.afficher()
