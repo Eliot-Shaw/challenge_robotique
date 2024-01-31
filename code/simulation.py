@@ -22,7 +22,7 @@ class Robot():
         self.temps_restant = base_temps_restant
 
         # characteristiques
-        self.speed_per_kg = 0.00698 # vitesse au km
+        self.speed_per_km = 0.00698 # vitesse au km
         self.conso_per_kg = 3 # consommation L au m et au kg
         self.base_speed = base_speed
         self.base_conso = base_conso
@@ -36,7 +36,7 @@ class Robot():
         self.valeur += gain
         self.masse += masse
         
-        self.speed = self.base_speed * (1-math.exp(-self.speed_per_kg*self.masse))
+        self.speed = self.base_speed * (1-math.exp(-self.speed_per_km*self.masse))
         self.conso = self.base_conso + self.conso_per_kg*self.masse
 
     def avancer(self, distance):
