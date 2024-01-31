@@ -8,7 +8,7 @@ import chemin_base
 from mcmc_class import Mcmc
 import mvt_robot
 
-class Robot():
+class Robot_Deprecated():
     def __init__(self, init_tutel, base_fuel = 10000, base_masse = 0, base_valeur = 0, base_x = 0.0, base_y = 0.0, base_orientation = 0.0, base_index_instruction = 0, base_speed = 1, base_conso = 100, base_temps_restant = 600):
         self.tutel = init_tutel 
         # stats
