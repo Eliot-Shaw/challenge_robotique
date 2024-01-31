@@ -55,6 +55,10 @@ class Robot:
         self.orientation += angle
         self.orientation %= 360
         
+    #TODO
+    #fction get action list pour robot
+    #fction action suivante pour robot
+        
 class Cylindre:
     def __init__(self,  base_x = 0.0, base_y = 0.0, base_valeur = 0, base_poids = 0):
         self.valeur = base_valeur
@@ -115,14 +119,16 @@ class Simu:
                 self.cylindres.remove(cylindre)
                 print("Cylindre récupéré !")
                 return
-    
+    #TODO
     #fction afficher map
-    #fction action suivante pour robot
 
 def main():
     simulation = Simu()
     simulation.ecrire_map()
     simulation.creer_cylindres()
+    simulation.afficher_map()
+    simulation.robot.get_action_list()
+    simulation.robot.do_next_action()
 
 
 if __name__ == '__main__':
