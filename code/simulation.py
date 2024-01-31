@@ -17,7 +17,6 @@ class Robot():
         self.x = base_x
         self.y = base_y
         self.orientation = base_orientation
-        self.index_instruction = base_index_instruction
         self.speed = base_speed # vitesse
         self.conso = base_conso # consommation L au m
         self.temps_restant = base_temps_restant
@@ -62,14 +61,12 @@ class Robot():
         self.orientation += angle
         self.orientation %= 360
     
-    def do_instruction(self, instructions):
-        if instructions not None:
-            instruction = instructions[0]
-            instructions = np.delete(instructions, 0)
-            if(instruction[:4]) == "TURN":
-                self.tutel.left(float(instruction[5:]))
-            if(instruction[:2]) == "GO":
-                self.tutel.forward(float(instruction[2:])*5)
+    def do_instruction(self, instructions, id):
+        instruction = instructions[id]
+        if(instruction[:4]) == "TURN":
+            self.tutel.left(float(instruction[5:]))
+        if(instruction[:2]) == "GO":
+            self.tutel.forward(float(instruction[2:])*5)
         
     
         
@@ -169,7 +166,9 @@ def main():
     simulation.creer_cylindres()
     simulation.afficher()
     simulation.get_action_list()
-    simulation.robot.do_instruction(simulation.action_list)
+    for i in range(40):
+        simulation.robot.do_instruction(simulation.action_list, i)
+        simulation.recuperer_cylindre_si_proche()
 
 
 if __name__ == '__main__':
