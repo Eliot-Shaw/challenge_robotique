@@ -56,7 +56,6 @@ class Robot:
         self.orientation %= 360
         
 class Cylindre:
-    
     def __init__(self,  base_x = 0.0, base_y = 0.0, base_valeur = 0, base_poids = 0):
         self.valeur = base_valeur
         self.poids = base_poids
@@ -83,11 +82,10 @@ class Simu:
     def __init__(self):
         self.robot = Robot()  # Création d'un robot
         self.cylindres = []   # Liste pour les cylindres
+        self.path_map = "../divers/rng_donnees-map.txt"
     
     def creer_cylindres(self):
-        path_map = "../divers/rng_donnees-map.txt"
-        ecrire_map(path_map)
-        with open(path_map, 'r') as file:
+        with open(self.path_map, 'r') as file:
             lines = file.readlines()
 
         for line in lines:
@@ -103,8 +101,8 @@ class Simu:
             else:
                 print("Format de ligne incorrect:", line)
     
-    def ecrire_map(path_map):
-        with open(path_map, 'w') as f:
+    def ecrire_map(self):
+        with open(self.path_map, 'w') as f:
         # Write the Python code to the file
             for i in range(20):
                 f.write(f'{random.random()*25}\t{random.random()*25}\t{float(random.randint(1,3))}\n')
@@ -117,10 +115,14 @@ class Simu:
                 self.cylindres.remove(cylindre)
                 print("Cylindre récupéré !")
                 return
-
+    
+    #fction afficher map
+    #fction action suivante pour robot
 
 def main():
-    pass
+    simulation = Simu()
+    simulation.ecrire_map()
+    simulation.creer_cylindres()
 
 
 if __name__ == '__main__':
