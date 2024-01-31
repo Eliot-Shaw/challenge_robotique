@@ -39,17 +39,6 @@ def init_plan():
     global plan
     plan = np.empty((1,2)) # ordre, valeur
 
-def angle_entre_vecteurs(vector_1, vector_2):
-
-    unit_vector_1 = vector_1 / np.linalg.norm(vector_1)
-    print(vector_1, np.linalg.norm(unit_vector_1))
-
-    unit_vector_2 = vector_2 / np.linalg.norm(vector_2)
-    dot_product = np.dot(unit_vector_1, unit_vector_2)
-    angle = np.arccos(dot_product)
-
-    return angle
-
 def main():
     x_robot = 0.0
     y_robot = 0.0
