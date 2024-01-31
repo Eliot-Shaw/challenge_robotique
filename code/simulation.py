@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import chemin_base
 from mcmc_class import Mcmc
+import mvt_robot
 
 class Robot():
     def __init__(self, init_tutel, base_fuel = 10000, base_masse = 0, base_valeur = 0, base_x = 0.0, base_y = 0.0, base_orientation = 0.0, base_index_instruction = 0, base_speed = 1, base_conso = 100, base_temps_restant = 600):
@@ -99,18 +100,14 @@ class Simu():
         self.action_list = self.get_action_list()
     
     def creer_cylindres(self, la_map):
-        for line in la_map:
-            data = line.strip().split('\t')
-            if len(data) == 3:
-                x, y, type_cylindre = data
-                x = float(x)
-                y = float(y)
-                type_cylindre = int(float(type_cylindre))  # Assumant que le type de cylindre est un entier
-                cylindre = Cylindre(x, y)  # Création d'un cylindre avec des valeurs par défaut
-                cylindre.changer_type(type_cylindre)
-                self.cylindres.append((cylindre))
-            else:
-                print("Format de ligne incorrect:", line)
+        for i in range(len(la_map)):
+            x, y, type_cylindre = la_map[i][0], la_map[i][1], la_map[i][2]
+            x = float(x)
+            y = float(y)
+            type_cylindre = int(float(type_cylindre))  # Assumant que le type de cylindre est un entier
+            cylindre = Cylindre(x, y)  # Création d'un cylindre avec des valeurs par défaut
+            cylindre.changer_type(type_cylindre)
+            self.cylindres.append((cylindre))
     
     # Creation d'une map random, return un np.array de la ditre map
     def ecrire_map(self):
@@ -171,7 +168,7 @@ def main():
     sig0 = mcmc.process()
     
     simulation.get_action_list()
-    for i in range(len(simulation.path_actions)):
+    for i in range(len(sig0)): #ERREUR path action txt string
         simulation.robot.do_instruction(simulation.action_list, i)
         simulation.recuperer_cylindre_si_proche()
     simulation.afficher(sig0)
