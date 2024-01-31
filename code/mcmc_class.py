@@ -56,7 +56,7 @@ class Mcmc():
         return Mat
 
     def distanceAvecMat(self, iA, iB, matDis):
-        return matDis[iA][iB]
+        return matDis[int(iA)][int(iB)]
 
 
     def longueur(self, Chemin, matDis):
@@ -92,10 +92,10 @@ class Mcmc():
             if T == 0.0:
                 print(f"b trop bas{b}")
                 break
-            iA = rd.randint(0, self.m-1)
-            iB = rd.randint(0, self.m-1)
+            iA = rd.randint(1, self.m-1)
+            iB = rd.randint(1, self.m-1)
             while iA == iB:
-                iB = rd.randint(0, self.m-1)
+                iB = rd.randint(1, self.m-1)
 
             sigmaPrime = sigma.copy()
             # temp = np.array(sigmaPrime[iA])
@@ -178,7 +178,7 @@ def main():
     mcmc = Mcmc()
 
     sig = chem.faire_chemin()
-    l, sig0 = mcmc.MCMC2(500, sig, a=300, b=1.1)
+    l, sig0 = mcmc.MCMC2(500000, sig, a=300, b=1.1)
     afficher(sig0)
     print(f"longueur reelle mcmc (sig0) : {mcmc.longueurReelle(sig0)}") # longueur de mcmc
     print(f"longueur reelle mcmc (chemin_base) : {mcmc.longueurReelle(sig)}") # longueur de chemin_base
@@ -204,3 +204,6 @@ def main():
 
     # print(sig) # chemin_base
     # print(sig0) # mcmc 
+
+if __name__ == '__main__':
+    main()
