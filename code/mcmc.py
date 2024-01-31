@@ -77,27 +77,26 @@ def calculMatriceDis(lstV):
 
     return Mat
 
-def distanceAvecMat(VA, VB, lstV, matDis):
-    iA = 0
-    iB = 0
-    for i in range(len(lstV)):
-        if np.array_equal(lstV[i],VA):
-            iA = i
-        elif np.array_equal(lstV[i],VB):
-            iB = i
+def distanceAvecMat(iA, iB, matDis):
+    # iA = 0
+    # iB = 0
+    # for i in range(len(lstV)):
+    #     if np.array_equal(lstV[i],VA):
+    #         iA = i
+    #     elif np.array_equal(lstV[i],VB):
+    #         iB = i
+    return matDis[int(iA)][int(iB)]
 
-    return matDis[iA][iB]
 
-
-def longueur(Chemin, Villes, matDis):
+def longueur(Chemin, matDis):
     res = 0
     for i in range(len(Chemin)-1):
         VA = Chemin[i]
         VB = Chemin[i+1]
-        res += distanceAvecMat(VA, VB, Villes, matDis)
+        res += distanceAvecMat(VA[3], VB[3], matDis)
 
 
-    res += distanceAvecMat(Chemin[-1], Chemin[0], Villes, matDis)
+    res += distanceAvecMat(Chemin[-1][3], Chemin[0][3], matDis)
 
     return res
 
@@ -165,22 +164,23 @@ def MCMC(N):
 def MCMC2(N, sigma1, a, b):
     Villes = np.concatenate((np.array([[0, 0, 0]]),importerVilles()), axis=0)
     m = len(Villes)
+    Villes = np.concatenate((Villes, np.array([[i for i in range(m)]]).T), axis=1)
     matDistance = calculMatriceDis(Villes)
     sigma0 = sigma1
-    lsigma0 = longueur(sigma0, Villes, matDistance)
+    lsigma0 = longueur(sigma0, matDistance)
     sigma = sigma0.copy()
     T = 100
     for n in range(2,N):
-        T = abs(mt.sin(n)/(n**b))*a
+        # T = abs(mt.sin(n)/(n**b))*a
         #T *= 0.999
-        # T = Tn(n, a, b)
+        T = Tn(n, a, b)
         if T == 0.0:
             print(f"b trop bas{b}")
             break
-        iA = rd.randint(0, m-1)
-        iB = rd.randint(0, m-1)
+        iA = rd.randint(1, m-1)
+        iB = rd.randint(1, m-1)
         while iA == iB:
-            iB = rd.randint(0, m-1)
+            iB = rd.randint(1, m-1)
 
         sigmaPrime = sigma.copy()
         # temp = np.array(sigmaPrime[iA])
@@ -190,8 +190,8 @@ def MCMC2(N, sigma1, a, b):
         sigmaPrime[[iA, iB]] = sigmaPrime[[iB, iA]]
 
 
-        lsigma = longueur(sigma, Villes, matDistance)
-        deltaLong = lsigma - longueur(sigmaPrime, Villes, matDistance)
+        lsigma = longueur(sigma, matDistance)
+        deltaLong = lsigma - longueur(sigmaPrime, matDistance)
         if deltaLong >= 0:
             rho = 1
         else:
@@ -228,8 +228,8 @@ def Tn(N, a = 100, b = 0.99, h = 1):
 
     return 1/mt.sqrt(k)
     '''
-    return 2.5 - np.log(np.log(2.71828182846 + N))
-    # return a*(b**N)
+    # return 2.5 - np.log(np.log(2.71828182846 + N))
+    return a*(b**N)
 
     
 #lancement(500)
@@ -256,13 +256,14 @@ sig = chem.faire_chemin()
 #     f.write(f'a={a} --- b={bz} --- l={l}\n')
 
 
-l, sig0 = MCMC2(500, sig, a=300, b=1.1)
+l, sig0 = MCMC2(500000, sig, a=10, b=0.998)
 # l, sig0 = MCMC(1000000)
 
 # print(sig) # chemin_base
 # print(sig0) # mcmc 
+print(sig0)
 print(f"longueur reelle mcmc : {longueurReelle(sig0)}") # longueur de mcmc
-print(f"longueur reelle mcmc : {longueurReelle(sig)}") # longueur de chemin_base
+print(f"longueur reelle chemin de base : {longueurReelle(sig)}") # longueur de chemin_base
 
 def afficher():
     fig = plt.figure(1)
@@ -289,3 +290,5 @@ def afficher():
 
 # Villes = importerVilles()
 # print(Villes)
+    
+afficher()
