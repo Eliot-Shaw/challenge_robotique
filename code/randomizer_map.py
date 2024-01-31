@@ -9,7 +9,7 @@ def ecrire_plan_txt(path_plan):
             f.write(f'{random.random()*25}\t{random.random()*25}\t{float(random.randint(1,3))}\n')
 
 def main():
-    ecrire_plan_txt('../divers/plan.txt')
+    ecrire_plan_txt('../divers/rng_donnees-map.txt')
     
 if __name__ == '__main__':
     main()
