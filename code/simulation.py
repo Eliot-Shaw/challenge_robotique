@@ -56,18 +56,17 @@ class Robot:
         self.orientation %= 360
         
 class Cylindre:
-    tab_type = [(1.0,1.0),
-                (2.0,2.0),
-                (3.0,2.0)]
+    
     def __init__(self,  base_x = 0.0, base_y = 0.0, base_valeur = 0, base_poids = 0):
         self.valeur = base_valeur
         self.poids = base_poids
         self.x = base_x = 0.0
         self.y = base_y = 0.0
+        self.tab_type = [(1.0,1.0),(2.0,2.0),(3.0,2.0)]
         
     def changer_type(self, type_cylindre):
-        self.valeur = tab_type[type_cylindre-1][0]
-        self.poids = tab_type[type_cylindre-1][1]
+        self.valeur = self.tab_type[type_cylindre-1][0]
+        self.poids = self.tab_type[type_cylindre-1][1]
         
     def changer_valeur(self,new_valeur):
         self.valeur = new_valeur
