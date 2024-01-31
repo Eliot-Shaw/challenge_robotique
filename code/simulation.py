@@ -27,12 +27,9 @@ class Robot():
         self.base_speed = base_speed
         self.base_conso = base_conso
 
-        # descrption des types_cylindre de cylindres gain, masse
-        self.type_cylindre =[(1.0, 1.0), (2.0, 2.0), (3.0, 2.0)]
-    
-    def recuperer_cylindre(self, teype_cylindre):
-        gain = self.type_cylindre[teype_cylindre][0]
-        masse = self.type_cylindre[teype_cylindre][1]
+    def recuperer_cylindre(self, un_cylindre):
+        gain = un_cylindre.valeur
+        masse = un_cylindre.poids
         self.valeur += gain
         self.masse += masse
         
@@ -44,12 +41,13 @@ class Robot():
             print("Distance nulle")
             return
         #consommation
-        if self.fuel - distance*self.conso < 0:
+        if self.fuel - distance*self.conso <= 0:
             print(f"Manque de fuel ! fuel restant:{self.fuel}")
             return
         #temps
-        if self.temps_restant - 1/(self.speed/distance):
+        if self.temps_restant - distance/(self.speed) <= 0:
             print(f"Manque de temps_restant ! temps restant:{self.temps_restant}")
+            print(f"Claclou vetu:{distance/(self.speed)}")
             return
 
         self.fuel -= distance*self.conso
@@ -67,6 +65,7 @@ class Robot():
             self.tutel.left(float(instruction[5:]))
         if(instruction[:2]) == "GO":
             self.tutel.forward(float(instruction[2:])*5)
+            self.avancer(float(instruction[2:]))
         
 class Cylindre():
     def __init__(self,  base_x = 0.0, base_y = 0.0, base_valeur = 0, base_poids = 0):
@@ -123,11 +122,11 @@ class Simu():
                 f.write(f'{random.random()*25}\t{random.random()*25}\t{float(random.randint(1,3))}\n')
             
     def recuperer_cylindre_si_proche(self):
-        for cylindre in self.cylindres:
-            distance = math.sqrt((cylindre.x - self.robot.x)**2 + (cylindre.y - self.robot.y)**2)
+        for i in range(len(self.cylindres)):
+            distance = math.sqrt((self.cylindres[i].x - self.robot.x)**2 + (self.cylindres[i].y - self.robot.y)**2)
             if distance <= 1:
-                self.robot.recuperer_cylindre(cylindre)
-                self.cylindres.remove(cylindre)
+                self.robot.recuperer_cylindre(self.cylindres[i])
+                self.cylindres.remove(self.cylindres[i])
                 print("Cylindre récupéré !")
                 return
             
@@ -162,11 +161,11 @@ def main():
     simulation = Simu(robot) # Création d'une simu
     simulation.ecrire_map()
     simulation.creer_cylindres()
-    simulation.afficher()
     simulation.get_action_list()
     for i in range(40):
         simulation.robot.do_instruction(simulation.action_list, i)
         simulation.recuperer_cylindre_si_proche()
+    simulation.afficher()
 
 
 if __name__ == '__main__':
