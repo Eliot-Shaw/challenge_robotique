@@ -86,7 +86,7 @@ class Simu:
     
     def creer_cylindres(self):
         path_map = "../divers/rng_donnees-map.txt"
-        ecrire_map(path_map)
+        self.ecrire_map(path_map)
         with open(path_map, 'r') as file:
             lines = file.readlines()
 
@@ -103,7 +103,7 @@ class Simu:
             else:
                 print("Format de ligne incorrect:", line)
     
-    def ecrire_map(path_map):
+    def ecrire_map(self, path_map):
         with open(path_map, 'w') as f:
         # Write the Python code to the file
             for i in range(20):
