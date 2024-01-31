@@ -1,4 +1,4 @@
-import math
+import math, random
 import sys
 import turtle as t
 from time import sleep
@@ -86,25 +86,29 @@ class Simu:
         self.cylindres = []   # Liste pour les cylindres
     
     def creer_cylindres(self):
-        file_path = "../divers/rng_donnees-map.txt"
-        try:
-            with open(file_path, 'r') as file:
-                lines = file.readlines()
+        path_map = "../divers/rng_donnees-map.txt"
+        ecrire_map(path_map)
+        with open(path_map, 'r') as file:
+            lines = file.readlines()
 
-            for line in lines:
-                data = line.strip().split('\t')
-                if len(data) == 3:
-                    x, y, type_cylindre = data
-                    x = float(x)
-                    y = float(y)
-                    type_cylindre = int(type_cylindre)  # Assumant que le type de cylindre est un entier
-                    cylindre = Cylindre(x, y)  # Création d'un cylindre avec des valeurs par défaut
-                    cylindre.changer_type(type_cylindre)
-                    self.cylindres.append((cylindre))
-                else:
-                    print("Format de ligne incorrect:", line)
-        except FileNotFoundError:
-            print("Fichier non trouvé à l'emplacement spécifié.")
+        for line in lines:
+            data = line.strip().split('\t')
+            if len(data) == 3:
+                x, y, type_cylindre = data
+                x = float(x)
+                y = float(y)
+                type_cylindre = int(type_cylindre)  # Assumant que le type de cylindre est un entier
+                cylindre = Cylindre(x, y)  # Création d'un cylindre avec des valeurs par défaut
+                cylindre.changer_type(type_cylindre)
+                self.cylindres.append((cylindre))
+            else:
+                print("Format de ligne incorrect:", line)
+    
+    def ecrire_map(path_map):
+        with open(path_map, 'w') as f:
+        # Write the Python code to the file
+            for i in range(20):
+                f.write(f'{random.random()*25}\t{random.random()*25}\t{float(random.randint(1,3))}\n')
             
     def recuperer_cylindre_si_proche(self):
         for cylindre in self.cylindres:
