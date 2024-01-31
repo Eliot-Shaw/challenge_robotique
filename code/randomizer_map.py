@@ -1,5 +1,4 @@
 import math
-import numpy as np
 import random
 
 def ecrire_plan_txt(path_plan):

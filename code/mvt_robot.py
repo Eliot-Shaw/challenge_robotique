@@ -7,6 +7,7 @@ theta_robot = 0.0
 
 def go_point(x_point, y_point, x_robot, y_robot):
     distance = math.sqrt((x_point-x_robot)**2+(y_point-y_robot)**2)
+    x_robot, y_robot = x_point, y_point
     ajout_ordre_plan('GO', distance)
 
 def tourner_point(x_point, y_point, x_robot, y_robot):
@@ -49,7 +50,6 @@ def main():
     for point in ordre[1:]:
         tourner_point(point[0], point[1], x_robot, y_robot)
         go_point(point[0], point[1], x_robot, y_robot)
-        x_robot, y_robot = point[0], point[1]
     ecrire_plan_txt(plan_robot, plan)
     mcmc.afficher()
     
