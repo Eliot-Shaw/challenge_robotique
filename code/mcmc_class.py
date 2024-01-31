@@ -8,7 +8,9 @@ import chemin_base as chem
 class Mcmc():
 
     def __init__(self):
-        self.importerVilles()
+        self.Villes = np.concatenate((np.array([[0, 0, 0]]),self.importerVilles()), axis=0)
+        self.m = len(self.Villes)
+        self.matDistance = self.calculMatriceDis(self.Villes)
 
 
     def importerVilles(self):
@@ -52,25 +54,25 @@ class Mcmc():
 
         return Mat
 
-    def distanceAvecMat(self, VA, VB, lstV, matDis):
+    def distanceAvecMat(self, VA, VB, matDis):
         iA = 0
         iB = 0
-        for i in range(len(lstV)):
-            if np.array_equal(lstV[i],VA):
+        for i in range(len(self.Villes)):
+            if np.array_equal(self.Villes[i],VA):
                 iA = i
-            elif np.array_equal(lstV[i],VB):
+            elif np.array_equal(self.Villes[i],VB):
                 iB = i
 
         return matDis[iA][iB]
 
 
-    def longueur(self, Chemin, Villes, matDis):
+    def longueur(self, Chemin, matDis):
         res = 0
         for i in range(len(Chemin)-1):
             VA = Chemin[i]
             VB = Chemin[i+1]
-            res += self.distanceAvecMat(VA, VB, Villes, matDis)
-        res += self.distanceAvecMat(Chemin[-1], Chemin[0], Villes, matDis)
+            res += self.distanceAvecMat(VA, VB, matDis)
+        res += self.distanceAvecMat(Chemin[-1], Chemin[0], matDis)
 
         return res
 
@@ -86,11 +88,8 @@ class Mcmc():
 
 
     def MCMC2(self, N, sigma1, a, b):
-        Villes = np.concatenate((np.array([[0, 0, 0]]),self.importerVilles()), axis=0)
-        m = len(Villes)
-        matDistance = self.calculMatriceDis(Villes)
         sigma0 = sigma1
-        lsigma0 = self.longueur(sigma0, Villes, matDistance)
+        lsigma0 = self.longueur(sigma0, self.Villes, self.matDistance)
         sigma = sigma0.copy()
         T = 100
         for n in range(2,N):
@@ -100,10 +99,10 @@ class Mcmc():
             if T == 0.0:
                 print(f"b trop bas{b}")
                 break
-            iA = rd.randint(0, m-1)
-            iB = rd.randint(0, m-1)
+            iA = rd.randint(0, self.m-1)
+            iB = rd.randint(0, self.m-1)
             while iA == iB:
-                iB = rd.randint(0, m-1)
+                iB = rd.randint(0, self.m-1)
 
             sigmaPrime = sigma.copy()
             # temp = np.array(sigmaPrime[iA])
@@ -113,8 +112,8 @@ class Mcmc():
             sigmaPrime[[iA, iB]] = sigmaPrime[[iB, iA]]
 
 
-            lsigma = self.longueur(sigma, Villes, matDistance)
-            deltaLong = lsigma - self.longueur(sigmaPrime, Villes, matDistance)
+            lsigma = self.longueur(sigma, self.Villes, self.matDistance)
+            deltaLong = lsigma - self.longueur(sigmaPrime, self.Villes, self.matDistance)
             if deltaLong >= 0:
                 rho = 1
             else:
@@ -155,39 +154,7 @@ class Mcmc():
         return 1/mt.sqrt(k)
         '''
 
-#lancement(500)
-
-sig = chem.faire_chemin()
-
-# VRAI CODE
-# Open a file in write mode
-# with open('../divers/resultats.txt', 'w') as f:
-#     # Write the Python code to the file
-#     for i in range(0,20,1):
-#         for j in range(5):
-#                 a = 10
-#                 bz = 0.985+i*0.0001
-#                 l, sig0 = MCMC2(5000, sig, a, bz) #iterations et chemin
-#                 f.write(f'a={a} --- b={bz} --- l={l}\n')
-
-#FAUX CODE DE TEST
-# with open('../divers/resultats.txt', 'w') as f:
-#     # Write the Python code to the file
-#     a = 10
-#     bz = 0.996
-#     l, sig0 = 1,sig
-#     f.write(f'a={a} --- b={bz} --- l={l}\n')
-
-
-l, sig0 = MCMC2(500, sig, a=300, b=1.1)
-# l, sig0 = MCMC(1000000)
-
-# print(sig) # chemin_base
-# print(sig0) # mcmc 
-print(f"longueur reelle mcmc : {longueurReelle(sig0)}") # longueur de mcmc
-print(f"longueur reelle mcmc : {longueurReelle(sig)}") # longueur de chemin_base
-
-def afficher():
+def afficher(sig0):
     fig = plt.figure(1)
 
     tColorTab = {1:'yellow', 2:'orange', 3:'red'}
@@ -210,5 +177,37 @@ def afficher():
     plt.plot(np.array([sig0.T[0][-1], sig0.T[0][0]]),np.array([sig0.T[1][-1], sig0.T[1][0]]))
     plt.show()
 
-# Villes = importerVilles()
-# print(Villes)
+
+def main():
+    # Villes = importerVilles()
+    # print(Villes)
+    #lancement(500)
+    mcmc = Mcmc()
+
+    sig = chem.faire_chemin()
+    l, sig0 = mcmc.MCMC2(500, sig, a=300, b=1.1)
+    afficher(sig0)
+    print(f"longueur reelle mcmc (sig0) : {mcmc.longueurReelle(sig0)}") # longueur de mcmc
+    print(f"longueur reelle mcmc (chemin_base) : {mcmc.longueurReelle(sig)}") # longueur de chemin_base
+
+    # VRAI CODE
+    # Open a file in write mode
+    # with open('../divers/resultats.txt', 'w') as f:
+    #     # Write the Python code to the file
+    #     for i in range(0,20,1):
+    #         for j in range(5):
+    #                 a = 10
+    #                 bz = 0.985+i*0.0001
+    #                 l, sig0 = MCMC2(5000, sig, a, bz) #iterations et chemin
+    #                 f.write(f'a={a} --- b={bz} --- l={l}\n')
+
+    #FAUX CODE DE TEST
+    # with open('../divers/resultats.txt', 'w') as f:
+    #     # Write the Python code to the file
+    #     a = 10
+    #     bz = 0.996
+    #     l, sig0 = 1,sig
+    #     f.write(f'a={a} --- b={bz} --- l={l}\n')
+
+    # print(sig) # chemin_base
+    # print(sig0) # mcmc 
