@@ -72,6 +72,40 @@ class Cylindre:
         self.x = new_x
         self.y = new_y
 
+
+class Simu:
+    def __init__(self):
+        self.robot = Robot()  # Création d'un robot
+        self.cylindres = []   # Liste pour les cylindres
+    
+    def creer_cylindres(self, nombre):
+        for _ in range(nombre):
+            valeur = random.randint(1, 100)  # Valeur aléatoire entre 1 et 100
+            poids = random.randint(1, 10)     # Poids aléatoire entre 1 et 10
+            x = random.uniform(-10, 10)       # Position x aléatoire
+            y = random.uniform(-10, 10)       # Position y aléatoire
+            cylindre = Cylindre(valeur, poids, x, y)  # Création d'un cylindre
+            self.cylindres.append(cylindre)   # Ajout du cylindre à la liste
+            
+    def recuperer_cylindre_si_proche(self):
+        for cylindre in self.cylindres:
+            distance = math.sqrt((cylindre.x - self.robot.x)**2 + (cylindre.y - self.robot.y)**2)
+            if distance <= 0.1:
+                self.robot.recuperer_cylindre(cylindre)
+                self.cylindres.remove(cylindre)
+                print("Cylindre récupéré !")
+                return
+
+# Exemple d'utilisation
+simulation = Simu()
+simulation.creer_cylindres(5)  # Création de 5 cylindres
+
+# Simulation du déplacement du robot
+simulation.robot.x = 0.05
+simulation.robot.y = 0.05
+simulation.recuperer_cylindre_si_proche()
+
+
         
 def recup_data_map():
     argc = len(sys.argv)
