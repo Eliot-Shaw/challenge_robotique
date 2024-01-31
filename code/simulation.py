@@ -28,8 +28,8 @@ class Robot():
         self.base_conso = base_conso
     
     def recuperer_cylindre(self, type_cylindre):
-        gain = chemin_base.type_cylindre[type_cylindre][0]
-        masse = chemin_base.type_cylindre[type_cylindre][1]
+        gain = self.type_cylindre[type_cylindre][0]
+        masse = self.type_cylindre[type_cylindre][1]
         self.valeur += gain
         self.masse += masse
         
@@ -75,9 +75,6 @@ class Robot():
             if(instruction[:2]) == "GO":
                 tutel.forward(float(instruction[2:])*5)
     
-
-    #TODO
-    #fction action suivante pour robot
         
 class Cylindre():
     def __init__(self,  base_x = 0.0, base_y = 0.0, base_valeur = 0, base_poids = 0):
@@ -107,6 +104,10 @@ class Simu():
         self.robot = Robot()  # Création d'un robot
         self.cylindres = []   # Liste pour les cylindres
         self.path_map = "../divers/rng_donnees-map.txt"
+        # descrption des types_cylindre de cylindres gain, masse
+        self.type_cylindre =[(1.0, 1.0),
+                        (2.0, 2.0),
+                        (3.0, 2.0)]
     
     def creer_cylindres(self):
         with open(self.path_map, 'r') as file:
