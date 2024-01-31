@@ -166,12 +166,12 @@ def main():
     simulation.creer_cylindres(la_map) # Ajout des objets cylindres dans la simu
     
     mcmc = Mcmc()
-    sig0 = robot.process(mcmc)
+    sig0, instructions_robot = robot.process(mcmc)
     
     simulation.get_action_list()
-    for i in range(len(sig0)): #ERREUR path action txt string
-        print(f"ceci est for n°{i}")
-        simulation.robot.do_instruction(i)
+    for instruction in instructions_robot: #ERREUR path action txt string
+        print(f"ceci est for n°{instruction}")
+        simulation.robot.do_instruction(instruction)
         simulation.recuperer_cylindre_si_proche()
     simulation.afficher(sig0)
 

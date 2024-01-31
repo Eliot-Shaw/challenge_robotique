@@ -1,6 +1,7 @@
 from robot import Robot
 import math
 import numpy as np
+import sys
 
 class MvtRobot(Robot): 
     def __init__(self, init_tutel):
@@ -52,15 +53,19 @@ class MvtRobot(Robot):
                     f.write(f'TURN {self.plan[i][1]}\n')
                 f.write(f'STOP\n')
             f.write(f'FINISH')
+
+    def recup_data_action(self):
+        DataMap = open(self.plan_robot, 'r')
+        return DataMap.readlines()
     
-    def do_instruction(self, id):
+    def do_instruction(self, instruction):
         print("on est dans do instruction")
-        instruction = self.plan_robot[id]
         if(instruction[:4]) == "TURN":
+            print("TURN")
             self.tutel.left(float(instruction[5:]))
         if(instruction[:2]) == "GO":
+            print("GO")
             self.tutel.forward(float(instruction[2:])*5)
-            self.avancer(float(instruction[2:]))
 
     def process(self, mcmc_instance):
         ordre = mcmc_instance.process()
@@ -69,7 +74,8 @@ class MvtRobot(Robot):
             self.go_point(point[0], point[1])
         self.ecrire_plan_txt()
         print("plan txt ecrit")
-        return ordre
+        instructions_robot = self.recup_data_action()
+        return ordre, instructions_robot
     
 
 def main():
