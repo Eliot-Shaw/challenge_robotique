@@ -46,13 +46,13 @@ class Cylindre:
         self.x = base_x = 0.0
         self.y = base_y = 0.0
         
-    def changer_valeur(new_valeur):
+    def changer_valeur(self,new_valeur):
         self.valeur = new_valeur
         
-    def changer_poids(new_poids):
+    def changer_poids(self, new_poids):
         self.poids = new_poids
     
-    def changer_position(new_x, new_y):
+    def changer_position(self, new_x, new_y):
         self.x = new_x
         self.y = new_y
     
