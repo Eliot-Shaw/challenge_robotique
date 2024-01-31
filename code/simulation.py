@@ -1,4 +1,4 @@
-import math
+import math, random
 import sys
 import turtle as t
 from time import sleep
@@ -51,37 +51,77 @@ class Robot:
         self.x =+ math.cos(self.orientation/(180*math.pi))*distance
         self.y =+ math.sin(self.orientation/(180*math.pi))*distance
         
-        
     def tourner(self, angle):
         self.orientation += angle
         self.orientation %= 360
         
+class Cylindre:
+    tab_type = [(1.0,1.0),
+                (2.0,2.0),
+                (3.0,2.0)]
+    def __init__(self,  base_x = 0.0, base_y = 0.0, base_valeur = 0, base_poids = 0):
+        self.valeur = base_valeur
+        self.poids = base_poids
+        self.x = base_x = 0.0
+        self.y = base_y = 0.0
         
-def recup_data_map():
-    argc = len(sys.argv)
-    if argc < 2:
-        print("preciser le nom du fichier de donnees en argument...")
-        exit()
-    #lecture du fichier
-    DataMap = open(sys.argv[1], 'r')
-    return DataMap.readlines()
+    def changer_type(self, type_cylindre):
+        self.valeur = tab_type[type_cylindre-1][0]
+        self.poids = tab_type[type_cylindre-1][1]
+        
+    def changer_valeur(self,new_valeur):
+        self.valeur = new_valeur
+        
+    def changer_poids(self, new_poids):
+        self.poids = new_poids
+    
+    def changer_position(self, new_x, new_y):
+        self.x = new_x
+        self.y = new_y
+
+
+class Simu:
+    def __init__(self):
+        self.robot = Robot()  # Création d'un robot
+        self.cylindres = []   # Liste pour les cylindres
+    
+    def creer_cylindres(self):
+        path_map = "../divers/rng_donnees-map.txt"
+        ecrire_map(path_map)
+        with open(path_map, 'r') as file:
+            lines = file.readlines()
+
+        for line in lines:
+            data = line.strip().split('\t')
+            if len(data) == 3:
+                x, y, type_cylindre = data
+                x = float(x)
+                y = float(y)
+                type_cylindre = int(type_cylindre)  # Assumant que le type de cylindre est un entier
+                cylindre = Cylindre(x, y)  # Création d'un cylindre avec des valeurs par défaut
+                cylindre.changer_type(type_cylindre)
+                self.cylindres.append((cylindre))
+            else:
+                print("Format de ligne incorrect:", line)
+    
+    def ecrire_map(path_map):
+        with open(path_map, 'w') as f:
+        # Write the Python code to the file
+            for i in range(20):
+                f.write(f'{random.random()*25}\t{random.random()*25}\t{float(random.randint(1,3))}\n')
+            
+    def recuperer_cylindre_si_proche(self):
+        for cylindre in self.cylindres:
+            distance = math.sqrt((cylindre.x - self.robot.x)**2 + (cylindre.y - self.robot.y)**2)
+            if distance <= 0.1:
+                self.robot.recuperer_cylindre(cylindre)
+                self.cylindres.remove(cylindre)
+                print("Cylindre récupéré !")
+                return
+
 
 def main():
-    tutel = t.Turtle()
-    tutel.pd()
-    tutel.home()
-    instructions = recup_data_map()
-
-    for instruction in instructions:
-        sleep(0.01)
-        if(instruction[:4]) == "TURN":
-            tutel.left(float(instruction[5:]))
-            
-        
-        if(instruction[:2]) == "GO":
-            tutel.forward(float(instruction[2:])*5)
-
-    t.mainloop()
+    pass
 
 
 if __name__ == '__main__':
