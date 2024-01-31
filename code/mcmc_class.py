@@ -171,15 +171,14 @@ def afficher(sig0):
     plt.show()
 
 
-def main():
+def main(map):
     # Villes = importerVilles()
     # print(Villes)
     #lancement(500)
     mcmc = Mcmc()
-
-    sig = chem.faire_chemin()
+    sig = chem.faire_chemin(map)
     l, sig0 = mcmc.MCMC2(500000, sig, a=300, b=1.1)
-    afficher(sig0)
+    # afficher(sig0)
     print(f"longueur reelle mcmc (sig0) : {mcmc.longueurReelle(sig0)}") # longueur de mcmc
     print(f"longueur reelle mcmc (chemin_base) : {mcmc.longueurReelle(sig)}") # longueur de chemin_base
 

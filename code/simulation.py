@@ -135,13 +135,13 @@ class Simu():
         DataMap = open(self.path_actions, 'r')
         return DataMap.readlines()
             
-    def afficher(self):
+    def afficher(self, sig0):
+        fig = plt.figure(1)
+
         tColorTab = {1:'yellow', 2:'orange', 3:'red'}
         dbRayon = 0.85
-        ##########################
-        # point d'entree du script 
-        ##########################
-        DataMap = np.loadtxt(self.path_map, skiprows=0, dtype=float)
+
+        DataMap = np.loadtxt(self.path_map, dtype=float)
         #affichage des donnees de la carte
         x=DataMap[:,0]
         y=DataMap[:,1]
@@ -153,6 +153,9 @@ class Simu():
             plt.plot(x[i],y[i],marker='+',color=tColorTab[int(t[i])])
             c1 = plt.Circle((x[i],y[i]), dbRayon,color=tColorTab[int(t[i])] )
             ax.add_patch(c1)
+
+        plt.plot(sig0.T[0], sig0.T[1])
+        plt.plot(np.array([sig0.T[0][-1], sig0.T[0][0]]),np.array([sig0.T[1][-1], sig0.T[1][0]]))
         plt.show()
 
 def main():
@@ -161,11 +164,17 @@ def main():
     simulation = Simu(robot) # Création d'une simu
     simulation.ecrire_map()
     simulation.creer_cylindres()
+    mcmc = Mcmc()
+    sig = chemin_base.faire_chemin(chemin_base.recup_data_map())
+    l, sig0 = mcmc.MCMC2(500000, sig, a=300, b=1.1)
+    # afficher(sig0)
+    print(f"longueur reelle mcmc (sig0) : {mcmc.longueurReelle(sig0)}") # longueur de mcmc
+    print(f"longueur reelle mcmc (chemin_base) : {mcmc.longueurReelle(sig)}") # longueur de chemin_base
     simulation.get_action_list()
-    for i in range(40):
+    for i in range(len(simulation.path_actions)):
         simulation.robot.do_instruction(simulation.action_list, i)
         simulation.recuperer_cylindre_si_proche()
-    simulation.afficher()
+    simulation.afficher(sig0)
 
 
 if __name__ == '__main__':
