@@ -1,3 +1,9 @@
+import math
+import sys
+import turtle as t
+from time import sleep
+import chemin_base
+
 class Robot:
     def __init__(self, base_fuel = 10000, base_masse = 0, base_valeur = 0, base_x = 0.0, base_y = 0.0, base_orientation = 0.0, base_index_instruction = 0, base_speed = 1, base_conso = 100, base_temps_restant = 600):
         # stats
