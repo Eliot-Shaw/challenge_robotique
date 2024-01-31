@@ -20,10 +20,6 @@ def recup_data_map():
     DataMap = np.loadtxt(sys.argv[1], skiprows=0, dtype=float)
     return DataMap
 
-def recup_data_map2(map_txt):
-    DataMap = np.loadtxt(map_txt, skiprows=0, dtype=float)
-    return DataMap
-
 def init_cylindres(donnees_map):
     global cylindres 
     cylindres = np.concatenate((np.array([[0.0, 0.0, 0.0]]), donnees_map), axis=0) # creations des cylindres avec le bot en 0.0 une cylindre aussi
@@ -60,6 +56,12 @@ def faire_chemin(map):
     for i in range(len(cylindres)):
         echanger_cylindres(i+1, choix_cylindre_suivant(i))
     return cylindres
+
+def process():
+    map = recup_data_map()
+    cylindres = faire_chemin(map)
+    return cylindres
+
 
 
 def main():
