@@ -101,8 +101,8 @@ class Simu:
             else:
                 print("Format de ligne incorrect:", line)
     
-    def ecrire_map(path_map):
-        with open(path_map, 'w') as f:
+    def ecrire_map(self):
+        with open(self.path_map, 'w') as f:
         # Write the Python code to the file
             for i in range(20):
                 f.write(f'{random.random()*25}\t{random.random()*25}\t{float(random.randint(1,3))}\n')
