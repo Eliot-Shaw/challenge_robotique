@@ -1,48 +1,23 @@
-import mcmc
 import math
-import numpy as np
-import turtle
 
-def go_point(x_point, y_point, x_robot, y_robot):
-    distance = math.sqrt((x_point-x_robot)**2+(y_point-y_robot)**2)
-    ajout_ordre_plan('GO', distance)
-
-def tourner_point(x_point, y_point, x_robot, y_robot):
-    angle = math.acos((y_point-y_robot)/math.sqrt((x_point-x_robot)**2+(y_point-y_robot)**2))
-    ajout_ordre_plan('TURN', angle) # vérifier si tourne dans le bon sens en fonction du +/-, sinon inverser calcul degré
-
-def ecrire_plan_txt(path_plan, directions):
-    with open(path_plan, 'w') as f:
-    # Write the Python code to the file
-        for i in range(len(directions)):
-            if directions[0] == 'GO':
-                f.write(f'GO {directions[1]}\n')
-            elif directions[0] == 'TURN':
-                f.write(f'TURN {directions[1]}\n')
-            elif directions[0] == 'STOP':
-                pass
-            f.write(f'STOP\n')
-        f.write(f'FINISH')
-            
-def ajout_ordre_plan(ordre, valeur):
-    plan = np.concatenate((plan, np.array([[ordre, valeur]])), axis=0)
-
-def init_plan():
-    global plan
-    plan = np.array()
+def calculer_angle(x1, y1, x2, y2):
+    # Calcul de la différence en y et en x
+    dy = y2 - y1
+    dx = x2 - x1
     
-def main():
-    x_robot = 0.0
-    y_robot = 0.0
-    ordre = mcmc.sig0
-    plan_robot = '../divers/plan_robot.txt'
-    init_plan()
-    for point in ordre:
-        tourner_point(point[0], point[1], x_robot, y_robot)
-        go_point(point[0], point[1], x_robot, y_robot)
-    ecrire_plan_txt(plan_robot, plan)
+    # Calcul de l'angle en radians en utilisant la fonction arctan2
+    angle_rad = math.atan2(dy, dx)
     
-    tutel = turtle.Turtle()
-    tutel.pd()
-    tutel.forward(25)
-    turtle.mainloop()
+    # Conversion de l'angle en degrés
+    angle_deg = math.degrees(angle_rad)
+    
+    # Assurer que l'angle est dans la plage [0, 360)
+    angle_deg = angle_deg % 360
+    
+    return angle_deg
+
+# Exemple d'utilisation :
+x1, y1 = 0, 0
+x2, y2 = 3, 4
+angle = calculer_angle(x1, y1, x2, y2)
+print("L'angle par rapport à l'horizontale est:", angle, "degrés")
