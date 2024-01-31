@@ -10,7 +10,7 @@ class Mcmc():
     def __init__(self):
         self.Villes = np.concatenate((np.array([[0, 0, 0]]),self.importerVilles()), axis=0)
         self.m = len(self.Villes)
-        self.matDistance = self.calculMatriceDis(self.Villes)
+        self.matDistance = self.calculMatriceDis()
 
 
     def importerVilles(self):
@@ -44,13 +44,13 @@ class Mcmc():
         return mt.sqrt((lat1 - lat2)**2 + (lon1 - lon2)**2)
     
 
-    def calculMatriceDis(self, lstV):
+    def calculMatriceDis(self):
 
-        n = len(lstV)
+        n = len(self.Villes)
         Mat = [ [ None for y in range( n ) ] for x in range( n ) ]
         for i in range(n):
             for j in range(n):
-                Mat[i][j] = self.distancePercue(lstV[i], lstV[j])
+                Mat[i][j] = self.distancePercue(self.Villes[i], self.Villes[j])
 
         return Mat
 
