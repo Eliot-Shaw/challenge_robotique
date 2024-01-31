@@ -45,11 +45,27 @@ class Robot:
         self.x =+ math.cos(self.orientation/(180*math.pi))*distance
         self.y =+ math.sin(self.orientation/(180*math.pi))*distance
         
-        
     def tourner(self, angle):
         self.orientation += angle
         self.orientation %= 360
         
+class Cylindre:
+    def __init__(self, base_valeur, base_poids, base_x = 0.0, base_y = 0.0):
+        self.valeur = base_valeur
+        self.poids = base_poids
+        self.x = base_x = 0.0
+        self.y = base_y = 0.0
+        
+    def changer_valeur(self,new_valeur):
+        self.valeur = new_valeur
+        
+    def changer_poids(self, new_poids):
+        self.poids = new_poids
+    
+    def changer_position(self, new_x, new_y):
+        self.x = new_x
+        self.y = new_y
+
         
 def recup_data_map():
     argc = len(sys.argv)
