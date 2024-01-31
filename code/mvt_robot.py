@@ -2,6 +2,7 @@ from robot import Robot
 import math
 import numpy as np
 import sys
+from time import sleep
 
 class MvtRobot(Robot): 
     def __init__(self, init_tutel):
@@ -60,10 +61,8 @@ class MvtRobot(Robot):
     
     def do_instruction(self, instruction):
         if(instruction[:4]) == "TURN":
-            print("TURN")
             self.tutel.left(float(instruction[5:]))
         if(instruction[:2]) == "GO":
-            print("GO")
             self.tutel.forward(float(instruction[2:])*5)
 
     def process(self, mcmc_instance):
@@ -72,6 +71,7 @@ class MvtRobot(Robot):
             self.tourner_point(point[0], point[1])
             self.go_point(point[0], point[1])
         self.ecrire_plan_txt()
+        sleep(0.001)
         instructions_robot = self.recup_data_action()
         return ordre, instructions_robot
     

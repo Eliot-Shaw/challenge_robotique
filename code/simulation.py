@@ -105,7 +105,6 @@ def main():
     mcmc = Mcmc()
     sig0, instructions_robot = robot.process(mcmc)
     
-    simulation.get_action_list()
     for instruction in instructions_robot: #ERREUR path action txt string
         simulation.robot.do_instruction(instruction)
         simulation.recuperer_cylindre_si_proche()
