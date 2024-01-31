@@ -56,11 +56,18 @@ class Robot:
         self.orientation %= 360
         
 class Cylindre:
-    def __init__(self, base_valeur, base_poids, base_x = 0.0, base_y = 0.0):
+    tab_type = [(1.0,1.0),
+                (2.0,2.0),
+                (3.0,2.0)]
+    def __init__(self,  base_x = 0.0, base_y = 0.0, base_valeur = 0, base_poids = 0):
         self.valeur = base_valeur
         self.poids = base_poids
         self.x = base_x = 0.0
         self.y = base_y = 0.0
+        
+    def changer_type(self, type_cylindre):
+        self.valeur = tab_type[type_cylindre-1][0]
+        self.poids = tab_type[type_cylindre-1][1]
         
     def changer_valeur(self,new_valeur):
         self.valeur = new_valeur
@@ -78,14 +85,26 @@ class Simu:
         self.robot = Robot()  # Création d'un robot
         self.cylindres = []   # Liste pour les cylindres
     
-    def creer_cylindres(self, nombre):
-        for _ in range(nombre):
-            valeur = random.randint(1, 100)  # Valeur aléatoire entre 1 et 100
-            poids = random.randint(1, 10)     # Poids aléatoire entre 1 et 10
-            x = random.uniform(-10, 10)       # Position x aléatoire
-            y = random.uniform(-10, 10)       # Position y aléatoire
-            cylindre = Cylindre(valeur, poids, x, y)  # Création d'un cylindre
-            self.cylindres.append(cylindre)   # Ajout du cylindre à la liste
+    def creer_cylindres(self):
+        file_path = "../divers/rng_donnees-map.txt"
+        try:
+            with open(file_path, 'r') as file:
+                lines = file.readlines()
+
+            for line in lines:
+                data = line.strip().split('\t')
+                if len(data) == 3:
+                    x, y, type_cylindre = data
+                    x = float(x)
+                    y = float(y)
+                    type_cylindre = int(type_cylindre)  # Assumant que le type de cylindre est un entier
+                    cylindre = Cylindre(x, y)  # Création d'un cylindre avec des valeurs par défaut
+                    cylindre.changer_type(type_cylindre)
+                    self.cylindres.append((cylindre))
+                else:
+                    print("Format de ligne incorrect:", line)
+        except FileNotFoundError:
+            print("Fichier non trouvé à l'emplacement spécifié.")
             
     def recuperer_cylindre_si_proche(self):
         for cylindre in self.cylindres:
@@ -96,14 +115,6 @@ class Simu:
                 print("Cylindre récupéré !")
                 return
 
-# Exemple d'utilisation
-simulation = Simu()
-simulation.creer_cylindres(5)  # Création de 5 cylindres
-
-# Simulation du déplacement du robot
-simulation.robot.x = 0.05
-simulation.robot.y = 0.05
-simulation.recuperer_cylindre_si_proche()
 
 
         
