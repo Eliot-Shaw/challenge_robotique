@@ -98,11 +98,8 @@ class Simu():
         self.path_map = "../divers/rng_donnees-map.txt"
         self.action_list = self.get_action_list()
     
-    def creer_cylindres(self):
-        with open(self.path_map, 'r') as file:
-            lines = file.readlines()
-
-        for line in lines:
+    def creer_cylindres(self, la_map):
+        for line in la_map:
             data = line.strip().split('\t')
             if len(data) == 3:
                 x, y, type_cylindre = data
@@ -115,11 +112,15 @@ class Simu():
             else:
                 print("Format de ligne incorrect:", line)
     
+    # Creation d'une map random, return un np.array de la ditre map
     def ecrire_map(self):
         with open(self.path_map, 'w') as f:
         # Write the Python code to the file
             for i in range(20):
                 f.write(f'{random.random()*25}\t{random.random()*25}\t{float(random.randint(1,3))}\n')
+        #lecture du fichier
+        DataMap = np.loadtxt(self.path_map, skiprows=0, dtype=float)
+        return DataMap
             
     def recuperer_cylindre_si_proche(self):
         for i in range(len(self.cylindres)):
@@ -129,7 +130,7 @@ class Simu():
                 self.cylindres.remove(self.cylindres[i])
                 print("Cylindre récupéré !")
                 return
-            
+
     def get_action_list(self):
         #lecture du fichier
         DataMap = open(self.path_actions, 'r')
@@ -162,14 +163,20 @@ def main():
     tutel = turtle.Turtle()  # Création d'un robot
     robot = Robot(tutel)  # Création d'un robot
     simulation = Simu(robot) # Création d'une simu
-    simulation.ecrire_map()
-    simulation.creer_cylindres()
+
+    la_map = simulation.ecrire_map() # Creation d'une map random, return un np.array
+    simulation.creer_cylindres(la_map) # Ajout de cylindres dans la simu
+    
+    
+    
     mcmc = Mcmc()
-    sig = chemin_base.faire_chemin(chemin_base.recup_data_map())
+    mcmc.process()
     l, sig0 = mcmc.MCMC2(500000, sig, a=300, b=1.1)
     # afficher(sig0)
     print(f"longueur reelle mcmc (sig0) : {mcmc.longueurReelle(sig0)}") # longueur de mcmc
     print(f"longueur reelle mcmc (chemin_base) : {mcmc.longueurReelle(sig)}") # longueur de chemin_base
+    
+    
     simulation.get_action_list()
     for i in range(len(simulation.path_actions)):
         simulation.robot.do_instruction(simulation.action_list, i)
