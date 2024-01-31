@@ -77,9 +77,11 @@ def main():
     print(plan)
     for point in ordre[1:]:
         tourner_2_point(dernier_point, np.array([x_robot, y_robot]), point[:2])
-        dernier_point = point[:2]
         # tourner_point(point[0], point[1], x_robot, y_robot)
         go_point(point[0], point[1], x_robot, y_robot)
+        
+        dernier_point = np.array([x_robot, y_robot])
+        x_robot, y_robot = point[0], point[1]
     ecrire_plan_txt(plan_robot, plan)
     mcmc.afficher()
     
