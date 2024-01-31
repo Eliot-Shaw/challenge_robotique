@@ -67,6 +67,7 @@ class Robot():
             self.tutel.left(float(instruction[5:]))
         if(instruction[:2]) == "GO":
             self.tutel.forward(float(instruction[2:])*5)
+        
     
         
 class Cylindre():
@@ -166,9 +167,9 @@ def main():
     simulation = Simu(robot) # Création d'une simu
     simulation.ecrire_map()
     simulation.creer_cylindres()
-    simulation.afficher_map()
-    simulation.robot.get_action_list()
-    simulation.robot.do_next_action()
+    simulation.afficher()
+    simulation.get_action_list()
+    simulation.robot.do_instruction(simulation.action_list[0])
 
 
 if __name__ == '__main__':
