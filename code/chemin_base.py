@@ -23,6 +23,7 @@ def recup_data_map():
 def init_cylindres(donnees_map):
     global cylindres 
     cylindres = np.concatenate((np.array([[0.0, 0.0, 0.0]]), donnees_map), axis=0) # creations des cylindres avec le bot en 0.0 une cylindre aussi
+    cylindres = np.concatenate((cylindres, np.array([[i for i in range(len(cylindres))]]).T), axis=1) #ajout d'une colonne d'indice
 
 def calcul_dist(id1, id2):
     distance_raw = math.sqrt((float(cylindres[id1][0]) - float(cylindres[id2][0]))**2 + (float(cylindres[id1][1]) - float(cylindres[id2][1]))**2)
