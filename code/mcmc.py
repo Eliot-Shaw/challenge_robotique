@@ -96,7 +96,7 @@ def longueur(Chemin, matDis):
         res += distanceAvecMat(VA[3], VB[3], matDis)
 
 
-    res += distanceAvecMat(Chemin[-1][3], Chemin[0][3], matDis)
+    # res += distanceAvecMat(Chemin[-1][3], Chemin[0][3], matDis)
 
     return res
 
@@ -108,7 +108,7 @@ def longueurReelle(Chemin):
         res += distance(VA, VB)
 
 
-    res += distance(Chemin[-1], Chemin[0])
+    # res += distance(Chemin[-1], Chemin[0])
 
     return res
 
@@ -173,7 +173,8 @@ def MCMC2(N, sigma1, a, b):
     for n in range(2,N):
         # T = abs(mt.sin(n)/(n**b))*a
         #T *= 0.999
-        T = Tn(n, a, b)
+        # T = Tn(n, a, b)
+        T = Tn(n)
         if T == 0.0:
             print(f"b trop bas{b}")
             break
@@ -195,8 +196,13 @@ def MCMC2(N, sigma1, a, b):
         if deltaLong >= 0:
             rho = 1
         else:
-            rho = mt.exp((deltaLong) / T)
-
+            try:
+                rho =  mt.exp((deltaLong) / T)
+            except Exception:
+                print(T)
+                exit()
+            # rho =  mt.exp((deltaLong) / T)
+        
 
         if rho >= 1:
             sigma = sigmaPrime.copy()
@@ -212,24 +218,96 @@ def MCMC2(N, sigma1, a, b):
     return longueurReelle(sigma0), sigma0
 
 
-def Tn(N, a = 100, b = 0.99, h = 1):
-    '''
+def MCMC3(N, a, b, lim_cylindre = 5):
+    Villes = np.concatenate((np.array([[0, 0, 0]]),importerVilles()), axis=0)
+    m = len(Villes)
+    Villes = np.concatenate((Villes, np.array([[i for i in range(m)]]).T), axis=1)
+    matDistance = calculMatriceDis(Villes)
+    sigma0 = np.array([Villes[i] for i in range(lim_cylindre)])
+    lsigma0 = longueur(sigma0, matDistance)
+    sigma = sigma0.copy()
+    T = 100
+    lst_indice = [i for i in range(lim_cylindre)]
+    for n in range(2,N):
+        # T = abs(mt.sin(n)/(n**b))*a
+        #T *= 0.999
+        # T = Tn(n, a, b)
+        T = Tn(n)
+        if T == 0.0:
+            print(f"b trop bas : {b}")
+            break
+        iA = rd.choice(lst_indice[1:])
+        iB = rd.randint(1, m-1)
+        while iA == iB:
+            iB = rd.randint(1, m-1)
+
+        
+
+        sigmaPrime = sigma.copy()
+        for i in range(lim_cylindre):
+            if sigma[i][3] == iA:
+                sigmaPrime[i] = Villes[iB]
+            elif sigma[i][3] == iB:
+                sigmaPrime[i] = Villes[iA]
+
+
+        # sigmaPrime[[iA, iB]] = Villes[[iB, iA]]
+
+
+        lsigma = longueur(sigma, matDistance)
+        deltaLong = lsigma - longueur(sigmaPrime, matDistance)
+        if deltaLong >= 0:
+            rho = 1
+        else:
+            try:
+                rho =  mt.exp((deltaLong) / T)
+            except Exception:
+                print(T)
+                exit()
+            # rho =  mt.exp((deltaLong) / T)
+        
+
+        if rho >= 1:
+            sigma = sigmaPrime.copy()
+            lst_indice.remove(iA)
+            lst_indice.append(iB)
+        else:
+            U = rd.random()
+            if U < rho:
+                sigma = sigmaPrime.copy()
+                lst_indice.remove(iA)
+                lst_indice.append(iB)
+
+        if lsigma0 > lsigma:
+            sigma0 = sigma.copy()
+            lsigma0 = lsigma
+
+    return longueurReelle(sigma0), sigma0
+
+
+def Tn(N, a = 100, b = 0.99, h = 10):
+    
     k = 1
-    n = N % 100000
+    n = N
     a = mt.exp((k - 1) * h)
     b = mt.exp(k * h)
     while not((a < n) and (n <= b)) and k < 300:
         k += 1
         a = mt.exp((k - 1) * h)
-        b = mt.exp(k * h)
+        try:
+            b = mt.exp(k * h)
+        except Exception:
+            print(k)
+            exit()
 
     if k == 300:
+        print(n)
         print("Y a problème")
 
-    return 1/mt.sqrt(k)
-    '''
+    return 1/k
+    
     # return 2.5 - np.log(np.log(2.71828182846 + N))
-    return a*(b**N)
+    # return a*(b**N)
 
     
 #lancement(500)
@@ -256,7 +334,7 @@ sig = chem.faire_chemin()
 #     f.write(f'a={a} --- b={bz} --- l={l}\n')
 
 
-l, sig0 = MCMC2(500000, sig, a=10, b=0.998)
+l, sig0 = MCMC3(10000, a=10, b=0.998, lim_cylindre = 5)
 # l, sig0 = MCMC(1000000)
 
 # print(sig) # chemin_base
