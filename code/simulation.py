@@ -1,5 +1,5 @@
-class Simulation:
-    def __init__(self, base_fuel = 10000, base_masse = 0, base_valeur = 0, base_x = 0.0, base_y = 0.0, base_orientation = 0.0, base_index_instruction = 0, base_speed = 1, base_conso = 100, base_temps = 0):
+class Robot:
+    def __init__(self, base_fuel = 10000, base_masse = 0, base_valeur = 0, base_x = 0.0, base_y = 0.0, base_orientation = 0.0, base_index_instruction = 0, base_speed = 1, base_conso = 100, base_temps_restant = 600):
         # stats
         self.fuel = base_fuel
         self.masse = base_masse
@@ -10,7 +10,7 @@ class Simulation:
         self.index_instruction = base_index_instruction
         self.speed = base_speed # vitesse
         self.conso = base_conso # consommation L au m
-        self.temps = base_temps
+        self.temps_restant = base_temps_restant
 
         # characteristiques
         self.speed_per_kg = 0.00698 # vitesse au km
@@ -28,9 +28,22 @@ class Simulation:
         self.conso = self.base_conso + self.conso_per_kg*self.masse
 
     def avancer(self, distance):
-        orientation_rad = self.orientation/(180*math.pi)
-        self.x =+ math.cos(orientation_rad)*distance
-        self.y =+ math.sin(orientation_rad)*distance
+        if distance == 0.0:
+            print("Distance nulle")
+            return
+        #consommation
+        if self.fuel - distance*self.conso < 0:
+            print(f"Manque de fuel ! fuel restant:{self.fuel}")
+            return
+        #temps
+        if self.temps_restant - 1/(self.speed/distance):
+            print(f"Manque de temps_restant ! temps restant:{self.temps_restant}")
+            return
+
+        self.fuel -= distance*self.conso
+        self.temps_restant -= distance/self.speed
+        self.x =+ math.cos(self.orientation/(180*math.pi))*distance
+        self.y =+ math.sin(self.orientation/(180*math.pi))*distance
         
         
     def tourner(self, angle):
