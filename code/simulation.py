@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import chemin_base
 from mcmc_class import Mcmc
+import mvt_robot
 
 class Robot():
     def __init__(self, init_tutel, base_fuel = 10000, base_masse = 0, base_valeur = 0, base_x = 0.0, base_y = 0.0, base_orientation = 0.0, base_index_instruction = 0, base_speed = 1, base_conso = 100, base_temps_restant = 600):
@@ -98,28 +99,25 @@ class Simu():
         self.path_map = "../divers/rng_donnees-map.txt"
         self.action_list = self.get_action_list()
     
-    def creer_cylindres(self):
-        with open(self.path_map, 'r') as file:
-            lines = file.readlines()
-
-        for line in lines:
-            data = line.strip().split('\t')
-            if len(data) == 3:
-                x, y, type_cylindre = data
-                x = float(x)
-                y = float(y)
-                type_cylindre = int(float(type_cylindre))  # Assumant que le type de cylindre est un entier
-                cylindre = Cylindre(x, y)  # Création d'un cylindre avec des valeurs par défaut
-                cylindre.changer_type(type_cylindre)
-                self.cylindres.append((cylindre))
-            else:
-                print("Format de ligne incorrect:", line)
+    def creer_cylindres(self, la_map):
+        for i in range(len(la_map)):
+            x, y, type_cylindre = la_map[i][0], la_map[i][1], la_map[i][2]
+            x = float(x)
+            y = float(y)
+            type_cylindre = int(float(type_cylindre))  # Assumant que le type de cylindre est un entier
+            cylindre = Cylindre(x, y)  # Création d'un cylindre avec des valeurs par défaut
+            cylindre.changer_type(type_cylindre)
+            self.cylindres.append((cylindre))
     
+    # Creation d'une map random, return un np.array de la ditre map
     def ecrire_map(self):
         with open(self.path_map, 'w') as f:
         # Write the Python code to the file
             for i in range(20):
                 f.write(f'{random.random()*25}\t{random.random()*25}\t{float(random.randint(1,3))}\n')
+        #lecture du fichier
+        DataMap = np.loadtxt(self.path_map, skiprows=0, dtype=float)
+        return DataMap
             
     def recuperer_cylindre_si_proche(self):
         for i in range(len(self.cylindres)):
@@ -129,19 +127,19 @@ class Simu():
                 self.cylindres.remove(self.cylindres[i])
                 print("Cylindre récupéré !")
                 return
-            
+
     def get_action_list(self):
         #lecture du fichier
         DataMap = open(self.path_actions, 'r')
         return DataMap.readlines()
             
-    def afficher(self):
+    def afficher(self, sig0):
+        fig = plt.figure(1)
+
         tColorTab = {1:'yellow', 2:'orange', 3:'red'}
         dbRayon = 0.85
-        ##########################
-        # point d'entree du script 
-        ##########################
-        DataMap = np.loadtxt(self.path_map, skiprows=0, dtype=float)
+
+        DataMap = np.loadtxt(self.path_map, dtype=float)
         #affichage des donnees de la carte
         x=DataMap[:,0]
         y=DataMap[:,1]
@@ -153,19 +151,27 @@ class Simu():
             plt.plot(x[i],y[i],marker='+',color=tColorTab[int(t[i])])
             c1 = plt.Circle((x[i],y[i]), dbRayon,color=tColorTab[int(t[i])] )
             ax.add_patch(c1)
+
+        plt.plot(sig0.T[0], sig0.T[1])
+        plt.plot(np.array([sig0.T[0][-1], sig0.T[0][0]]),np.array([sig0.T[1][-1], sig0.T[1][0]]))
         plt.show()
 
 def main():
     tutel = turtle.Turtle()  # Création d'un robot
     robot = Robot(tutel)  # Création d'un robot
     simulation = Simu(robot) # Création d'une simu
-    simulation.ecrire_map()
-    simulation.creer_cylindres()
+
+    la_map = simulation.ecrire_map() # Creation d'une map random, return un np.array
+    simulation.creer_cylindres(la_map) # Ajout de cylindres dans la simu
+    
+    mcmc = Mcmc()
+    sig0 = mcmc.process()
+    
     simulation.get_action_list()
-    for i in range(40):
+    for i in range(len(sig0)): #ERREUR path action txt string
         simulation.robot.do_instruction(simulation.action_list, i)
         simulation.recuperer_cylindre_si_proche()
-    simulation.afficher()
+    simulation.afficher(sig0)
 
 
 if __name__ == '__main__':
