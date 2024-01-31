@@ -55,8 +55,26 @@ class Robot:
         self.orientation += angle
         self.orientation %= 360
         
+    def get_action_list():
+        argc = len(sys.argv)
+        if argc < 2:
+            print("preciser le nom du fichier de donnees en argument...")
+            exit()
+        #lecture du fichier
+        DataMap = open(sys.argv[1], 'r')
+        return DataMap.readlines()
+    
+    def do_next_action(instructions)
+        for instruction in instructions:
+        sleep(0.01)
+        if(instruction[:4]) == "TURN":
+            tutel.left(float(instruction[5:]))
+            
+        if(instruction[:2]) == "GO":
+            tutel.forward(float(instruction[2:])*5)
+    
+
     #TODO
-    #fction get action list pour robot
     #fction action suivante pour robot
         
 class Cylindre:
@@ -114,7 +132,7 @@ class Simu:
     def recuperer_cylindre_si_proche(self):
         for cylindre in self.cylindres:
             distance = math.sqrt((cylindre.x - self.robot.x)**2 + (cylindre.y - self.robot.y)**2)
-            if distance <= 0.1:
+            if distance <= 1:
                 self.robot.recuperer_cylindre(cylindre)
                 self.cylindres.remove(cylindre)
                 print("Cylindre récupéré !")
