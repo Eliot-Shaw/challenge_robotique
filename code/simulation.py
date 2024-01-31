@@ -1,6 +1,6 @@
 import math, random
 import sys
-import turtle as t
+import turtle
 from time import sleep
 import matplotlib.pyplot as plt
 import numpy as np
@@ -8,7 +8,8 @@ import chemin_base
 from mcmc_class import Mcmc
 
 class Robot():
-    def __init__(self, base_fuel = 10000, base_masse = 0, base_valeur = 0, base_x = 0.0, base_y = 0.0, base_orientation = 0.0, base_index_instruction = 0, base_speed = 1, base_conso = 100, base_temps_restant = 600):
+    def __init__(self, init_tutel, base_fuel = 10000, base_masse = 0, base_valeur = 0, base_x = 0.0, base_y = 0.0, base_orientation = 0.0, base_index_instruction = 0, base_speed = 1, base_conso = 100, base_temps_restant = 600):
+        self.tutel = init_tutel 
         # stats
         self.fuel = base_fuel
         self.masse = base_masse
@@ -26,6 +27,9 @@ class Robot():
         self.conso_per_kg = 3 # consommation L au m et au kg
         self.base_speed = base_speed
         self.base_conso = base_conso
+
+        # descrption des types_cylindre de cylindres gain, masse
+        self.type_cylindre =[(1.0, 1.0), (2.0, 2.0), (3.0, 2.0)]
     
     def recuperer_cylindre(self, type_cylindre):
         gain = self.type_cylindre[type_cylindre][0]
@@ -57,23 +61,12 @@ class Robot():
     def tourner(self, angle):
         self.orientation += angle
         self.orientation %= 360
-        
-    def get_action_list():
-        argc = len(sys.argv)
-        if argc < 2:
-            print("preciser le nom du fichier de donnees en argument...")
-            exit()
-        #lecture du fichier
-        DataMap = open(sys.argv[1], 'r')
-        return DataMap.readlines()
     
-    def do_next_action(instructions):
-        for instruction in instructions:
-            sleep(0.01)
-            if(instruction[:4]) == "TURN":
-                tutel.left(float(instruction[5:]))
-            if(instruction[:2]) == "GO":
-                tutel.forward(float(instruction[2:])*5)
+    def do_instruction(self, instruction):
+        if(instruction[:4]) == "TURN":
+            self.tutel.left(float(instruction[5:]))
+        if(instruction[:2]) == "GO":
+            self.tutel.forward(float(instruction[2:])*5)
     
         
 class Cylindre():
@@ -100,14 +93,12 @@ class Cylindre():
 
 
 class Simu():
-    def __init__(self):
-        self.robot = Robot()  # Création d'un robot
+    def __init__(self, robot_init):
+        self.robot = robot_init
         self.cylindres = []   # Liste pour les cylindres
+        self.path_actions = "../divers/plan_robot.txt"
         self.path_map = "../divers/rng_donnees-map.txt"
-        # descrption des types_cylindre de cylindres gain, masse
-        self.type_cylindre =[(1.0, 1.0),
-                        (2.0, 2.0),
-                        (3.0, 2.0)]
+        self.action_list = self.get_action_list()
     
     def creer_cylindres(self):
         with open(self.path_map, 'r') as file:
@@ -141,6 +132,11 @@ class Simu():
                 print("Cylindre récupéré !")
                 return
             
+    def get_action_list(self):
+        #lecture du fichier
+        DataMap = open(self.path_actions, 'r')
+        return DataMap.readlines()
+            
     def afficher(sig0):
 
         argc = len(sys.argv)
@@ -171,7 +167,9 @@ class Simu():
         plt.show()
 
 def main():
-    simulation = Simu()
+    tutel = turtle.Turtle()  # Création d'un robot
+    robot = Robot(tutel)  # Création d'un robot
+    simulation = Simu(robot) # Création d'une simu
     simulation.ecrire_map()
     simulation.creer_cylindres()
     simulation.afficher()
