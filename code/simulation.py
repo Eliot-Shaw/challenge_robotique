@@ -138,13 +138,18 @@ class Simu():
         DataMap = open(self.path_actions, 'r')
         return DataMap.readlines()
             
-    def afficher(sig0):
-        fig = plt.figure(1)
-
+    def afficher():
         tColorTab = {1:'yellow', 2:'orange', 3:'red'}
         dbRayon = 0.85
-
-        DataMap = np.loadtxt(sys.argv[1], dtype=float)
+        ##########################
+        # point d'entree du script 
+        ##########################
+        argc = len(sys.argv)
+        if argc < 2:
+            print("preciser le nom du fichier de donnees en argument...")
+            exit()
+        #lecture du fichier
+        DataMap = np.loadtxt(sys.argv[1], skiprows=1, dtype=float)
         #affichage des donnees de la carte
         x=DataMap[:,0]
         y=DataMap[:,1]
@@ -156,9 +161,6 @@ class Simu():
             plt.plot(x[i],y[i],marker='+',color=tColorTab[int(t[i])])
             c1 = plt.Circle((x[i],y[i]), dbRayon,color=tColorTab[int(t[i])] )
             ax.add_patch(c1)
-
-        plt.plot(sig0.T[0], sig0.T[1])
-        plt.plot(np.array([sig0.T[0][-1], sig0.T[0][0]]),np.array([sig0.T[1][-1], sig0.T[1][0]]))
         plt.show()
 
 def main():
