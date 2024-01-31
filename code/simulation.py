@@ -137,8 +137,29 @@ class Simu:
                 self.cylindres.remove(cylindre)
                 print("Cylindre récupéré !")
                 return
-    #TODO
-    #fction afficher map
+            
+    def afficher(sig0):
+        fig = plt.figure(1)
+
+        tColorTab = {1:'yellow', 2:'orange', 3:'red'}
+        dbRayon = 0.85
+
+        DataMap = np.loadtxt(sys.argv[1], dtype=float)
+        #affichage des donnees de la carte
+        x=DataMap[:,0]
+        y=DataMap[:,1]
+        t=DataMap[:,2]
+        n = len(x)
+        fig = plt.figure(1)
+        ax = fig.gca()
+        for i in range(n):
+            plt.plot(x[i],y[i],marker='+',color=tColorTab[int(t[i])])
+            c1 = plt.Circle((x[i],y[i]), dbRayon,color=tColorTab[int(t[i])] )
+            ax.add_patch(c1)
+
+        plt.plot(sig0.T[0], sig0.T[1])
+        plt.plot(np.array([sig0.T[0][-1], sig0.T[0][0]]),np.array([sig0.T[1][-1], sig0.T[1][0]]))
+        plt.show()
 
 def main():
     simulation = Simu()
