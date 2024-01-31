@@ -142,12 +142,18 @@ class Simu():
                 return
             
     def afficher(sig0):
-        fig = plt.figure(1)
 
+        argc = len(sys.argv)
+        if argc < 2:
+            print("preciser le nom du fichier de donnees en argument...")
+            exit()
+        #lecture du fichier
+        DataMap = np.loadtxt(sys.argv[1], dtype=float)
+
+        fig = plt.figure(1)
         tColorTab = {1:'yellow', 2:'orange', 3:'red'}
         dbRayon = 0.85
 
-        DataMap = np.loadtxt(sys.argv[1], dtype=float)
         #affichage des donnees de la carte
         x=DataMap[:,0]
         y=DataMap[:,1]
@@ -168,7 +174,7 @@ def main():
     simulation = Simu()
     simulation.ecrire_map()
     simulation.creer_cylindres()
-    simulation.afficher_map()
+    simulation.afficher()
     simulation.robot.get_action_list()
     simulation.robot.do_next_action()
 
