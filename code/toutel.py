@@ -11,7 +11,9 @@ class Tutel:
         self.fuel = base_fuel
         self.masse = base_masse
         self.valeur = base_valeur
-        self.pos = base_pos # x, y et orientation en ° par rapport à horizontale vers la droite
+        self.x = 0.0
+        self.y = 0.0
+        self.orientation = 0.0
         self.index_instruction = base_index_instruction
         self.speed = base_speed # vitesse
         self.conso = base_conso # consommation L au m
@@ -30,12 +32,12 @@ class Tutel:
         self.conso = base_conso + self.conso_per_kg*self.masse
 
     def avancer(self, distance):
-        orientation_rad = self.pos[2]/(180*math.pi)
-        self.pos[0] =+ math.cos(orientation_rad)*distance
-        self.pos[1] =+ math.sin(orientation_rad)*distance
+        orientation_rad = self.orientation/(180*math.pi)
+        self.x =+ math.cos(orientation_rad)*distance
+        self.y =+ math.sin(orientation_rad)*distance
         
     def tourner(self, angle):
-        self.pos[2] += angle
+        self.orientation += angle
 
 
 
