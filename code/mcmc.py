@@ -37,7 +37,7 @@ def distancePercue(VA, VB):
     lon2 = float(VB[1])
 
     distance_raw = mt.sqrt((lat1 - lat2)**2 + (lon1 - lon2)**2)
-    distance_valeur = distance_raw/chem.type_cylindre[int(VB[2])-1][0]
+    distance_valeur = distance_raw/(chem.type_cylindre[int(VB[2])-1][0] * 1.25)
     distance_valeur_poids = distance_valeur*chem.type_cylindre[int(VB[2])-1][1]
     return distance_valeur_poids
 
@@ -285,7 +285,7 @@ def MCMC3(N, a, b, lim_cylindre = 5):
     return longueurReelle(sigma0), sigma0
 
 
-def Tn(N, a = 100, b = 0.99, h = 10):
+def Tn(N, a = 100, b = 0.99, h = 11):
     
     k = 1
     n = N
@@ -312,7 +312,7 @@ def Tn(N, a = 100, b = 0.99, h = 10):
     
 #lancement(500)
 
-sig = chem.faire_chemin()
+# sig = chem.faire_chemin()
 
 # VRAI CODE
 # Open a file in write mode
@@ -334,14 +334,14 @@ sig = chem.faire_chemin()
 #     f.write(f'a={a} --- b={bz} --- l={l}\n')
 
 
-l, sig0 = MCMC3(10000, a=10, b=0.998, lim_cylindre = 5)
+l, sig0 = MCMC3(100000, a=10, b=0.998, lim_cylindre = 12)
 # l, sig0 = MCMC(1000000)
 
 # print(sig) # chemin_base
 # print(sig0) # mcmc 
 print(sig0)
 print(f"longueur reelle mcmc : {longueurReelle(sig0)}") # longueur de mcmc
-print(f"longueur reelle chemin de base : {longueurReelle(sig)}") # longueur de chemin_base
+# print(f"longueur reelle chemin de base : {longueurReelle(sig)}") # longueur de chemin_base
 
 def afficher():
     fig = plt.figure(1)
