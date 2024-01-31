@@ -62,11 +62,14 @@ class Robot():
         self.orientation += angle
         self.orientation %= 360
     
-    def do_instruction(self, instruction):
-        if(instruction[:4]) == "TURN":
-            self.tutel.left(float(instruction[5:]))
-        if(instruction[:2]) == "GO":
-            self.tutel.forward(float(instruction[2:])*5)
+    def do_instruction(self, instructions):
+        if instructions not None:
+            instruction = instructions[0]
+            instructions = np.delete(instructions, 0)
+            if(instruction[:4]) == "TURN":
+                self.tutel.left(float(instruction[5:]))
+            if(instruction[:2]) == "GO":
+                self.tutel.forward(float(instruction[2:])*5)
         
     
         
@@ -144,7 +147,7 @@ class Simu():
         ##########################
         # point d'entree du script 
         ##########################
-        DataMap = np.loadtxt(self.path_map, skiprows=1, dtype=float)
+        DataMap = np.loadtxt(self.path_map, skiprows=0, dtype=float)
         #affichage des donnees de la carte
         x=DataMap[:,0]
         y=DataMap[:,1]
@@ -166,7 +169,7 @@ def main():
     simulation.creer_cylindres()
     simulation.afficher()
     simulation.get_action_list()
-    simulation.robot.do_instruction(simulation.action_list[0])
+    simulation.robot.do_instruction(simulation.action_list)
 
 
 if __name__ == '__main__':
