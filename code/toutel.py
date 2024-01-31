@@ -26,7 +26,7 @@ def main():
             
         
         if(instruction[:2]) == "GO":
-            tutel.forward(float(instruction[2:]))
+            tutel.forward(float(instruction[2:])*10)
 
     t.mainloop()
 
