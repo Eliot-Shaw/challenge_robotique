@@ -1,11 +1,10 @@
-from mcmc_class import Mcmc
 from robot import Robot
 import math
 import numpy as np
 
 class MvtRobot(Robot): 
     def __init__(self, init_tutel):
-        super.__init__(init_tutel)
+        super().__init__(init_tutel)
         ##caractiéristiques pour mvt robot
         self.theta_robot = 0.0
         self.x_robot = 0.0
@@ -17,6 +16,7 @@ class MvtRobot(Robot):
         self.plan = np.concatenate((self.plan, np.array([[ordre, valeur]])), axis=0)
 
     def go_point(self, x_point, y_point):
+        distance = math.sqrt((x_point-self.x_robot)**2+(y_point-self.y_robot)**2)
         if distance == 0.0:
             print("Distance nulle")
             return
@@ -32,17 +32,13 @@ class MvtRobot(Robot):
         
         self.fuel -= distance*self.conso
         self.temps_restant -= distance/self.speed
-        distance = math.sqrt((x_point-self.x_robot)**2+(y_point-self.y_robot)**2)
         self.x_robot, self.y_robot = x_point, y_point
         self.ajout_ordre_plan('GO', distance)
 
     def tourner_point(self, x_point, y_point):
         angle_point = math.atan2((y_point-self.y_robot),(x_point-self.x_robot))
-        print(f"angle point : {angle_point}")
         angle = angle_point - self.theta_robot
-        print(f"angle: {angle}")
         self.theta_robot = angle_point
-        print(f"theta_robot : {self.theta_robot}")
         angle = angle*180/math.pi
         self.ajout_ordre_plan('TURN', angle) # vérifier si tourne dans le bon sens en fonction du +/-, sinon inverser calcul degré
 
@@ -57,8 +53,9 @@ class MvtRobot(Robot):
                 f.write(f'STOP\n')
             f.write(f'FINISH')
     
-    def do_instruction(self, instructions, id):
-        instruction = instructions[id]
+    def do_instruction(self, id):
+        print("on est dans do instruction")
+        instruction = self.plan_robot[id]
         if(instruction[:4]) == "TURN":
             self.tutel.left(float(instruction[5:]))
         if(instruction[:2]) == "GO":
@@ -71,7 +68,8 @@ class MvtRobot(Robot):
             self.tourner_point(point[0], point[1])
             self.go_point(point[0], point[1])
         self.ecrire_plan_txt()
-        self.do_instruction()
+        print("plan txt ecrit")
+        return ordre
     
 
 def main():

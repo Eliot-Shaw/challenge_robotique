@@ -1,12 +1,11 @@
 import math, random
-import sys
 import turtle
 from time import sleep
 import matplotlib.pyplot as plt
 import numpy as np
 import chemin_base
 from mcmc_class import Mcmc
-import mvt_robot
+from mvt_robot import MvtRobot
 
 class Robot_Deprecated():
     def __init__(self, init_tutel, base_fuel = 10000, base_masse = 0, base_valeur = 0, base_x = 0.0, base_y = 0.0, base_orientation = 0.0, base_index_instruction = 0, base_speed = 1, base_conso = 100, base_temps_restant = 600):
@@ -108,6 +107,7 @@ class Simu():
             cylindre = Cylindre(x, y)  # Création d'un cylindre avec des valeurs par défaut
             cylindre.changer_type(type_cylindre)
             self.cylindres.append((cylindre))
+            print("creer cylindres done")
     
     # Creation d'une map random, return un np.array de la ditre map
     def ecrire_map(self):
@@ -117,6 +117,7 @@ class Simu():
                 f.write(f'{random.random()*25}\t{random.random()*25}\t{float(random.randint(1,3))}\n')
         #lecture du fichier
         DataMap = np.loadtxt(self.path_map, skiprows=0, dtype=float)
+        print("ecrire map random done")
         return DataMap
             
     def recuperer_cylindre_si_proche(self):
@@ -158,18 +159,19 @@ class Simu():
 
 def main():
     tutel = turtle.Turtle()  # Création d'un robot
-    robot = Robot(tutel)  # Création d'un robot
+    robot = MvtRobot(tutel)  # Création d'un robot
     simulation = Simu(robot) # Création d'une simu
 
-    la_map = simulation.ecrire_map() # Creation d'une map random, return un np.array
-    simulation.creer_cylindres(la_map) # Ajout de cylindres dans la simu
+    la_map = simulation.ecrire_map() # Creation d'une map random de cylindres, return un np.array
+    simulation.creer_cylindres(la_map) # Ajout des objets cylindres dans la simu
     
     mcmc = Mcmc()
-    sig0 = mcmc.process()
+    sig0 = robot.process(mcmc)
     
     simulation.get_action_list()
     for i in range(len(sig0)): #ERREUR path action txt string
-        simulation.robot.do_instruction(simulation.action_list, i)
+        print(f"ceci est for n°{i}")
+        simulation.robot.do_instruction(i)
         simulation.recuperer_cylindre_si_proche()
     simulation.afficher(sig0)
 

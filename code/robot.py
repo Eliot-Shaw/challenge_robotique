@@ -1,5 +1,4 @@
 import math
-from mvt_robot import MvtRobot
 
 class Robot():
     def __init__(self, init_tutel, base_fuel = 10000, base_masse = 0, base_valeur = 0, base_x = 0.0, base_y = 0.0, base_orientation = 0.0, base_index_instruction = 0, base_speed = 1, base_conso = 100, base_temps_restant = 600):
