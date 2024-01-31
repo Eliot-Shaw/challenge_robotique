@@ -138,18 +138,13 @@ class Simu():
         DataMap = open(self.path_actions, 'r')
         return DataMap.readlines()
             
-    def afficher():
+    def afficher(self):
         tColorTab = {1:'yellow', 2:'orange', 3:'red'}
         dbRayon = 0.85
         ##########################
         # point d'entree du script 
         ##########################
-        argc = len(sys.argv)
-        if argc < 2:
-            print("preciser le nom du fichier de donnees en argument...")
-            exit()
-        #lecture du fichier
-        DataMap = np.loadtxt(sys.argv[1], skiprows=1, dtype=float)
+        DataMap = np.loadtxt(self.path_map, skiprows=1, dtype=float)
         #affichage des donnees de la carte
         x=DataMap[:,0]
         y=DataMap[:,1]
