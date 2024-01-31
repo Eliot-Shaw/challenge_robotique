@@ -2,9 +2,8 @@ import math, random
 import sys
 import turtle as t
 from time import sleep
-import chemin_base
 
-class Robot:
+class Robot():
     def __init__(self, base_fuel = 10000, base_masse = 0, base_valeur = 0, base_x = 0.0, base_y = 0.0, base_orientation = 0.0, base_index_instruction = 0, base_speed = 1, base_conso = 100, base_temps_restant = 600):
         # stats
         self.fuel = base_fuel
@@ -25,8 +24,8 @@ class Robot:
         self.base_conso = base_conso
     
     def recuperer_cylindre(self, type_cylindre):
-        gain = chemin_base.type_cylindre[type_cylindre][0]
-        masse = chemin_base.type_cylindre[type_cylindre][1]
+        gain = self.type_cylindre[type_cylindre][0]
+        masse = self.type_cylindre[type_cylindre][1]
         self.valeur += gain
         self.masse += masse
         
@@ -64,20 +63,16 @@ class Robot:
         DataMap = open(sys.argv[1], 'r')
         return DataMap.readlines()
     
-    def do_next_action(instructions)
-        for instruction in instructions:
-        sleep(0.01)
-        if(instruction[:4]) == "TURN":
-            tutel.left(float(instruction[5:]))
+#TODO    # def do_next_action(instruction)
+    #     if(instruction[:4]) == "TURN":
+    #         tutel.left(float(instruction[5:]))
             
-        if(instruction[:2]) == "GO":
-            tutel.forward(float(instruction[2:])*5)
+    #     if(instruction[:2]) == "GO":
+    #         tutel.forward(float(instruction[2:]))
     
-
-    #TODO
-    #fction action suivante pour robot
         
-class Cylindre:
+class Cylindre():
+
     def __init__(self,  base_x = 0.0, base_y = 0.0, base_valeur = 0, base_poids = 0):
         self.valeur = base_valeur
         self.poids = base_poids
@@ -100,11 +95,15 @@ class Cylindre:
         self.y = new_y
 
 
-class Simu:
+class Simu():
     def __init__(self):
         self.robot = Robot()  # Création d'un robot
         self.cylindres = []   # Liste pour les cylindres
         self.path_map = "../divers/rng_donnees-map.txt"
+        # descrption des types_cylindre de cylindres gain, masse
+        self.type_cylindre =[(1.0, 1.0),
+                        (2.0, 2.0),
+                        (3.0, 2.0)]
     
     def creer_cylindres(self):
         with open(self.path_map, 'r') as file:
