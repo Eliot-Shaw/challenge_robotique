@@ -40,6 +40,17 @@ class Tutel:
         
     def tourner(self, angle):
         self.orientation += angle
+        self.orientation %= 360
+        
+    def calculer_angle(self, x2, y2):
+        dy = y2 - self.y
+        dx = x2 - self.x
+        
+        angle_rad = math.atan2(dy, dx)
+        return (math.degrees(angle_rad)% 360)
+        
+        
+
 
 class Cylindre:
     def __init__(self, base_valeur, base_poids, base_x = 0.0, base_y = 0.0):
