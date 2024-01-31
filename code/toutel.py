@@ -21,6 +21,8 @@ class Tutel:
         # characteristiques
         self.speed_per_kg = 0.00698 # vitesse au km
         self.conso_per_kg = 3 # consommation L au m et au kg
+        self.base_speed = base_speed
+        self.base_conso = base_conso
     
     def recuperer_cylindre(self, type_cylindre):
         gain = chemin_base.type_cylindre[type_cylindre][0]
@@ -28,8 +30,8 @@ class Tutel:
         self.valeur += gain
         self.masse += masse
         
-        self.speed = base_speed * (1-math.exp(-self.speed_per_kg*self.masse))
-        self.conso = base_conso + self.conso_per_kg*self.masse
+        self.speed = self.base_speed * (1-math.exp(-self.speed_per_kg*self.masse))
+        self.conso = self.base_conso + self.conso_per_kg*self.masse
 
     def avancer(self, distance):
         orientation_rad = self.orientation/(180*math.pi)
