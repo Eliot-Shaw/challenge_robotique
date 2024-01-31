@@ -6,14 +6,14 @@ import chemin_base
 import math
 
 class Tutel:
-    def __init__(self, base_fuel = 10000, base_masse = 0, base_valeur = 0, base_pos = [0.0, 0.0, 0.0], base_index_instruction = 0, base_speed = 1, base_conso = 100):
+    def __init__(self, base_fuel = 10000, base_masse = 0, base_valeur = 0, base_x = 0.0, base_y = 0.0, base_orientation = 0.0, base_index_instruction = 0, base_speed = 1, base_conso = 100):
         # stats
         self.fuel = base_fuel
         self.masse = base_masse
         self.valeur = base_valeur
-        self.x = 0.0
-        self.y = 0.0
-        self.orientation = 0.0
+        self.x = base_x
+        self.y = base_y
+        self.orientation = base_orientation
         self.index_instruction = base_index_instruction
         self.speed = base_speed # vitesse
         self.conso = base_conso # consommation L au m
@@ -39,7 +39,23 @@ class Tutel:
     def tourner(self, angle):
         self.orientation += angle
 
-
+class Cylindre:
+    def __init__(self, base_valeur, base_poids, base_x = 0.0, base_y = 0.0):
+        self.valeur = base_valeur
+        self.poids = base_poids
+        self.x = base_x = 0.0
+        self.y = base_y = 0.0
+        
+    def changer_valeur(new_valeur):
+        self.valeur = new_valeur
+        
+    def changer_poids(new_poids):
+        self.poids = new_poids
+    
+    def changer_position(new_x, new_y):
+        self.x = new_x
+        self.y = new_y
+    
 
 def recup_data_map():
     argc = len(sys.argv)
