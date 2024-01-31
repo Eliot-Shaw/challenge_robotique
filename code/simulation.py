@@ -30,9 +30,9 @@ class Robot():
         # descrption des types_cylindre de cylindres gain, masse
         self.type_cylindre =[(1.0, 1.0), (2.0, 2.0), (3.0, 2.0)]
     
-    def recuperer_cylindre(self, type_cylindre):
-        gain = self.type_cylindre[type_cylindre][0]
-        masse = self.type_cylindre[type_cylindre][1]
+    def recuperer_cylindre(self, teype_cylindre):
+        gain = self.type_cylindre[teype_cylindre][0]
+        masse = self.type_cylindre[teype_cylindre][1]
         self.valeur += gain
         self.masse += masse
         
@@ -67,8 +67,6 @@ class Robot():
             self.tutel.left(float(instruction[5:]))
         if(instruction[:2]) == "GO":
             self.tutel.forward(float(instruction[2:])*5)
-        
-    
         
 class Cylindre():
     def __init__(self,  base_x = 0.0, base_y = 0.0, base_valeur = 0, base_poids = 0):
@@ -111,7 +109,7 @@ class Simu():
                 x, y, type_cylindre = data
                 x = float(x)
                 y = float(y)
-                type_cylindre = int(type_cylindre)  # Assumant que le type de cylindre est un entier
+                type_cylindre = int(float(type_cylindre))  # Assumant que le type de cylindre est un entier
                 cylindre = Cylindre(x, y)  # Création d'un cylindre avec des valeurs par défaut
                 cylindre.changer_type(type_cylindre)
                 self.cylindres.append((cylindre))
