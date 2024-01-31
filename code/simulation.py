@@ -167,15 +167,8 @@ def main():
     la_map = simulation.ecrire_map() # Creation d'une map random, return un np.array
     simulation.creer_cylindres(la_map) # Ajout de cylindres dans la simu
     
-    
-    
     mcmc = Mcmc()
-    mcmc.process()
-    l, sig0 = mcmc.MCMC2(500000, sig, a=300, b=1.1)
-    # afficher(sig0)
-    print(f"longueur reelle mcmc (sig0) : {mcmc.longueurReelle(sig0)}") # longueur de mcmc
-    print(f"longueur reelle mcmc (chemin_base) : {mcmc.longueurReelle(sig)}") # longueur de chemin_base
-    
+    sig0 = mcmc.process()
     
     simulation.get_action_list()
     for i in range(len(simulation.path_actions)):
