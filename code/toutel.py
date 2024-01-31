@@ -5,7 +5,7 @@ from time import sleep
 import chemin_base
 import math
 
-class Tutel:
+class Tutel():
     def __init__(self, base_fuel = 10000, base_masse = 0, base_valeur = 0, base_x = 0.0, base_y = 0.0, base_orientation = 0.0, base_index_instruction = 0, base_speed = 1, base_conso = 100):
         # stats
         self.fuel = base_fuel
@@ -52,7 +52,7 @@ class Tutel:
         
 
 
-class Cylindre:
+class Cylindre():
     def __init__(self, base_valeur, base_poids, base_x = 0.0, base_y = 0.0):
         self.valeur = base_valeur
         self.poids = base_poids
