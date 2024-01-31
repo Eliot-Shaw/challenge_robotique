@@ -18,7 +18,7 @@ def tourner_point(x_point, y_point, x_robot, y_robot):
     angle = angle_point - theta_robot
     angle = (angle)%(2*math.pi)-math.pi
     print(f"angle: {angle}")
-    theta_robot = angle
+    theta_robot = angle_point
     print(f"theta_robot : {theta_robot}")
     angle = angle*180/math.pi
     ajout_ordre_plan('TURN', angle) # vérifier si tourne dans le bon sens en fonction du +/-, sinon inverser calcul degré
