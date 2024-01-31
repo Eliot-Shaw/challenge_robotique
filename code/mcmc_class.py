@@ -10,6 +10,7 @@ class Mcmc():
     def __init__(self):
         self.Villes = np.concatenate((np.array([[0, 0, 0]]),self.importerVilles()), axis=0)
         self.m = len(self.Villes)
+        self.Villes = np.concatenate((self.Villes, np.array([[i for i in range(self.m)]]).T), axis=1)
         self.matDistance = self.calculMatriceDis()
 
 
@@ -54,15 +55,7 @@ class Mcmc():
 
         return Mat
 
-    def distanceAvecMat(self, VA, VB, matDis):
-        iA = 0
-        iB = 0
-        for i in range(len(self.Villes)):
-            if np.array_equal(self.Villes[i],VA):
-                iA = i
-            elif np.array_equal(self.Villes[i],VB):
-                iB = i
-
+    def distanceAvecMat(self, iA, iB, matDis):
         return matDis[iA][iB]
 
 
@@ -71,8 +64,8 @@ class Mcmc():
         for i in range(len(Chemin)-1):
             VA = Chemin[i]
             VB = Chemin[i+1]
-            res += self.distanceAvecMat(VA, VB, matDis)
-        res += self.distanceAvecMat(Chemin[-1], Chemin[0], matDis)
+            res += self.distanceAvecMat(VA[3], VB[3], matDis)
+        res += self.distanceAvecMat(Chemin[-1][3], Chemin[0][3], matDis)
 
         return res
 
@@ -89,7 +82,7 @@ class Mcmc():
 
     def MCMC2(self, N, sigma1, a, b):
         sigma0 = sigma1
-        lsigma0 = self.longueur(sigma0, self.Villes, self.matDistance)
+        lsigma0 = self.longueur(sigma0, self.matDistance)
         sigma = sigma0.copy()
         T = 100
         for n in range(2,N):
@@ -112,8 +105,8 @@ class Mcmc():
             sigmaPrime[[iA, iB]] = sigmaPrime[[iB, iA]]
 
 
-            lsigma = self.longueur(sigma, self.Villes, self.matDistance)
-            deltaLong = lsigma - self.longueur(sigmaPrime, self.Villes, self.matDistance)
+            lsigma = self.longueur(sigma, self.matDistance)
+            deltaLong = lsigma - self.longueur(sigmaPrime, self.matDistance)
             if deltaLong >= 0:
                 rho = 1
             else:
