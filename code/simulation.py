@@ -6,66 +6,6 @@ import numpy as np
 import chemin_base
 from mcmc_class import Mcmc
 from mvt_robot import MvtRobot
-
-class Robot_Deprecated():
-    def __init__(self, init_tutel, base_fuel = 10000, base_masse = 0, base_valeur = 0, base_x = 0.0, base_y = 0.0, base_orientation = 0.0, base_index_instruction = 0, base_speed = 1, base_conso = 100, base_temps_restant = 600):
-        self.tutel = init_tutel 
-        # stats
-        self.fuel = base_fuel
-        self.masse = base_masse
-        self.valeur = base_valeur
-        self.x = base_x
-        self.y = base_y
-        self.orientation = base_orientation
-        self.speed = base_speed # vitesse
-        self.conso = base_conso # consommation L au m
-        self.temps_restant = base_temps_restant
-
-        # characteristiques
-        self.speed_per_km = 0.00698 # vitesse au km
-        self.conso_per_kg = 3 # consommation L au m et au kg
-        self.base_speed = base_speed
-        self.base_conso = base_conso
-
-    def recuperer_cylindre(self, un_cylindre):
-        gain = un_cylindre.valeur
-        masse = un_cylindre.poids
-        self.valeur += gain
-        self.masse += masse
-        
-        self.speed = self.base_speed * (1-math.exp(-self.speed_per_km*self.masse))
-        self.conso = self.base_conso + self.conso_per_kg*self.masse
-
-    def avancer(self, distance):
-        if distance == 0.0:
-            print("Distance nulle")
-            return
-        #consommation
-        if self.fuel - distance*self.conso <= 0:
-            print(f"Manque de fuel ! fuel restant:{self.fuel}")
-            return
-        #temps
-        if self.temps_restant - distance/(self.speed) <= 0:
-            print(f"Manque de temps_restant ! temps restant:{self.temps_restant}")
-            print(f"Claclou vetu:{distance/(self.speed)}")
-            return
-
-        self.fuel -= distance*self.conso
-        self.temps_restant -= distance/self.speed
-        self.x =+ math.cos(self.orientation/(180*math.pi))*distance
-        self.y =+ math.sin(self.orientation/(180*math.pi))*distance
-        
-    def tourner(self, angle):
-        self.orientation += angle
-        self.orientation %= 360
-    
-    def do_instruction(self, instructions, id):
-        instruction = instructions[id]
-        if(instruction[:4]) == "TURN":
-            self.tutel.left(float(instruction[5:]))
-        if(instruction[:2]) == "GO":
-            self.tutel.forward(float(instruction[2:])*5)
-            self.avancer(float(instruction[2:]))
         
 class Cylindre():
     def __init__(self,  base_x = 0.0, base_y = 0.0, base_valeur = 0, base_poids = 0):
@@ -107,7 +47,6 @@ class Simu():
             cylindre = Cylindre(x, y)  # Création d'un cylindre avec des valeurs par défaut
             cylindre.changer_type(type_cylindre)
             self.cylindres.append((cylindre))
-            print("creer cylindres done")
     
     # Creation d'une map random, return un np.array de la ditre map
     def ecrire_map(self):
@@ -117,7 +56,6 @@ class Simu():
                 f.write(f'{random.random()*25}\t{random.random()*25}\t{float(random.randint(1,3))}\n')
         #lecture du fichier
         DataMap = np.loadtxt(self.path_map, skiprows=0, dtype=float)
-        print("ecrire map random done")
         return DataMap
             
     def recuperer_cylindre_si_proche(self):
@@ -126,7 +64,6 @@ class Simu():
             if distance <= 1:
                 self.robot.recuperer_cylindre(self.cylindres[i])
                 self.cylindres.remove(self.cylindres[i])
-                print("Cylindre récupéré !")
                 return
 
     def get_action_list(self):
@@ -170,7 +107,6 @@ def main():
     
     simulation.get_action_list()
     for instruction in instructions_robot: #ERREUR path action txt string
-        print(f"ceci est for n°{instruction}")
         simulation.robot.do_instruction(instruction)
         simulation.recuperer_cylindre_si_proche()
     simulation.afficher(sig0)

@@ -59,7 +59,6 @@ class MvtRobot(Robot):
         return DataMap.readlines()
     
     def do_instruction(self, instruction):
-        print("on est dans do instruction")
         if(instruction[:4]) == "TURN":
             print("TURN")
             self.tutel.left(float(instruction[5:]))
@@ -73,7 +72,6 @@ class MvtRobot(Robot):
             self.tourner_point(point[0], point[1])
             self.go_point(point[0], point[1])
         self.ecrire_plan_txt()
-        print("plan txt ecrit")
         instructions_robot = self.recup_data_action()
         return ordre, instructions_robot
     
