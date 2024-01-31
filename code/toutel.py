@@ -70,7 +70,7 @@ class Cylindre:
         self.y = new_y
     
 
-def recup_data_map():
+def recup_data_action():
     argc = len(sys.argv)
     if argc < 2:
         print("preciser le nom du fichier de donnees en argument...")
@@ -84,7 +84,7 @@ def main():
     tutel = t.Turtle()
     tutel.pd()
     tutel.home()
-    instructions = recup_data_map()
+    instructions = recup_data_action()
 
     for instruction in instructions:
         sleep(0.01)
