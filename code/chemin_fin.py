@@ -35,7 +35,7 @@ def echanger_cylindres(cylindres, id_cylindre, id_voulue):
         cylindres[id_voulue] = temp
     return cylindres
 
-def faire_chemin(cylindres, depth):
+def faire_chemin(cylindres, depth = 2):
     for i in range(depth):
         cylindres = echanger_cylindres(cylindres, i+1, choix_cylindre_suivant(cylindres, i))
     return cylindres

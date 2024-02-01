@@ -160,11 +160,11 @@ class Mcmc():
 
         return 1/k
 
-    def process(self):
+    def process(self, lim_cylindre):
         sig = chem.process()
-        l, sig0 = self.MCMC3(500000)
-        print(f"longueur reelle mcmc (sig0) : {self.longueurReelle(sig0)}") # longueur de mcmc
-        print(f"longueur reelle mcmc (chemin_base) : {self.longueurReelle(sig)}") # longueur de chemin_base
+        l, sig0 = self.MCMC3(500000, lim_cylindre = lim_cylindre)
+        # print(f"longueur reelle mcmc (sig0) : {self.longueurReelle(sig0)}") # longueur de mcmc
+        # print(f"longueur reelle mcmc (chemin_base) : {self.longueurReelle(sig)}") # longueur de chemin_base
         return sig0
 
 def afficher(sig0):
