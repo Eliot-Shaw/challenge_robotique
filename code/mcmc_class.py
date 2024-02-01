@@ -79,52 +79,71 @@ class Mcmc():
 
         return res
 
-
-    def MCMC2(self, N, sigma1, a, b):
-        sigma0 = sigma1
-        lsigma0 = self.longueur(sigma0, self.matDistance)
+    def MCMC3(N, lim_cylindre = 5):
+        Villes = np.concatenate((np.array([[0, 0, 0]]),importerVilles()), axis=0)
+        m = len(Villes)
+        Villes = np.concatenate((Villes, np.array([[i for i in range(m)]]).T), axis=1)
+        matDistance = calculMatriceDis(Villes)
+        sigma0 = np.array([Villes[i] for i in range(lim_cylindre)])
+        lsigma0 = longueur(sigma0, matDistance)
         sigma = sigma0.copy()
         T = 100
+        lst_indice = [i for i in range(lim_cylindre)]
         for n in range(2,N):
-            T = abs(mt.sin(n)/(n**b))*a
+            # T = abs(mt.sin(n)/(n**b))*a
             #T *= 0.999
             # T = Tn(n, a, b)
+            T = Tn(n)
             if T == 0.0:
-                print(f"b trop bas{b}")
+                print(f"b trop bas : {b}")
                 break
-            iA = rd.randint(1, self.m-1)
-            iB = rd.randint(1, self.m-1)
+            iA = rd.choice(lst_indice[1:])
+            iB = rd.randint(1, m-1)
             while iA == iB:
-                iB = rd.randint(1, self.m-1)
+                iB = rd.randint(1, m-1)
+
+            
 
             sigmaPrime = sigma.copy()
-            # temp = np.array(sigmaPrime[iA])
-            # sigmaPrime[iA] = sigmaPrime[iB]
-            # sigmaPrime[iB] = temp
+            for i in range(lim_cylindre):
+                if sigma[i][3] == iA:
+                    sigmaPrime[i] = Villes[iB]
+                elif sigma[i][3] == iB:
+                    sigmaPrime[i] = Villes[iA]
 
-            sigmaPrime[[iA, iB]] = sigmaPrime[[iB, iA]]
+
+            # sigmaPrime[[iA, iB]] = Villes[[iB, iA]]
 
 
-            lsigma = self.longueur(sigma, self.matDistance)
-            deltaLong = lsigma - self.longueur(sigmaPrime, self.matDistance)
+            lsigma = longueur(sigma, matDistance)
+            deltaLong = lsigma - longueur(sigmaPrime, matDistance)
             if deltaLong >= 0:
                 rho = 1
             else:
-                rho = mt.exp((deltaLong) / T)
-
+                try:
+                    rho =  mt.exp((deltaLong) / T)
+                except Exception:
+                    print(T)
+                    exit()
+                # rho =  mt.exp((deltaLong) / T)
+            
 
             if rho >= 1:
                 sigma = sigmaPrime.copy()
+                lst_indice.remove(iA)
+                lst_indice.append(iB)
             else:
                 U = rd.random()
                 if U < rho:
                     sigma = sigmaPrime.copy()
+                    lst_indice.remove(iA)
+                    lst_indice.append(iB)
 
             if lsigma0 > lsigma:
                 sigma0 = sigma.copy()
                 lsigma0 = lsigma
 
-        return self.longueurReelle(sigma0), sigma0
+        return longueurReelle(sigma0), sigma0
 
 
     def Tn(self, N, a = 100, b = 0.99, h = 1):
