@@ -3,7 +3,7 @@ import turtle
 from time import sleep
 import matplotlib.pyplot as plt
 import numpy as np
-import chemin_base
+import sys
 from mcmc_class import Mcmc
 from mvt_robot import MvtRobot
         
@@ -35,7 +35,7 @@ class Simu():
         self.robot = robot_init
         self.cylindres = []   # Liste pour les cylindres
         self.path_actions = "../divers/plan_robot.txt"
-        self.path_map = "../divers/rng_donnees-map.txt"
+        self.path_map = "../divers/donnees-map.txt"
         self.action_list = self.get_action_list()
     
     def creer_cylindres(self, la_map):
@@ -48,14 +48,23 @@ class Simu():
             cylindre.changer_type(type_cylindre)
             self.cylindres.append((cylindre))
     
-    # Creation d'une map random, return un np.array de la ditre map
-    def ecrire_map(self):
-        with open(self.path_map, 'w') as f:
-        # Write the Python code to the file
-            for i in range(20):
-                f.write(f'{random.random()*25}\t{random.random()*25}\t{float(random.randint(1,3))}\n')
+    # # Creation d'une map random, return un np.array de la ditre map
+    # def ecrire_map(self):
+    #     with open(self.path_map, 'w') as f:
+    #     # Write the Python code to the file
+    #         for i in range(20):
+    #             f.write(f'{random.random()*25}\t{random.random()*25}\t{float(random.randint(1,3))}\n')
+    #     #lecture du fichier
+    #     DataMap = np.loadtxt(self.path_map, skiprows=0, dtype=float)
+    #     return DataMap
+            
+    def recup_data_map(self):
+        argc = len(sys.argv)
+        if argc < 2:
+            print("preciser le nom du fichier de donnees en argument...")
+            exit()
         #lecture du fichier
-        DataMap = np.loadtxt(self.path_map, skiprows=0, dtype=float)
+        DataMap = np.loadtxt(sys.argv[1], skiprows=0, dtype=float)
         return DataMap
             
     def recuperer_cylindre_si_proche(self):
@@ -99,11 +108,14 @@ def main():
     robot = MvtRobot(tutel)  # Création d'un robot
     simulation = Simu(robot) # Création d'une simu
 
-    la_map = simulation.ecrire_map() # Creation d'une map random de cylindres, return un np.array
+    la_map = simulation.recup_data_map() # Creation d'une map random de cylindres, return un np.array
     simulation.creer_cylindres(la_map) # Ajout des objets cylindres dans la simu
     
     mcmc = Mcmc()
-    sig0, instructions_robot = robot.process(mcmc)
+    sig0, instructions_robot, fuel_restant, temps_restant = robot.process(mcmc)
+    print(f"temps restant : {temps_restant}")
+    print(f"fuel restant : {fuel_restant}")
+
     
     for instruction in instructions_robot: #ERREUR path action txt string
         simulation.robot.do_instruction(instruction)

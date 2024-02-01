@@ -77,7 +77,7 @@ class Mcmc():
 
         return res
 
-    def MCMC3(self, N, lim_cylindre = 5):
+    def MCMC3(self, N, lim_cylindre = 21):
         sigma0 = np.array([self.Villes[i] for i in range(lim_cylindre)])
         lsigma0 = self.longueur(sigma0)
         sigma = sigma0.copy()
