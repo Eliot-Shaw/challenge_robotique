@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import chemin_base as chem
 
 class Mcmc():
-
     def __init__(self):
         self.Villes = np.concatenate((np.array([[0, 0, 0]]),self.importerVilles()), axis=0)
         self.m = len(self.Villes)

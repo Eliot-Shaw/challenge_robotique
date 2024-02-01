@@ -1,7 +1,7 @@
 import math
 
 class Robot():
-    def __init__(self, init_tutel, base_fuel = 7500, base_masse = 0, base_valeur = 0, base_x = 0.0, base_y = 0.0, base_orientation = 0.0, base_index_instruction = 0, base_speed = 1, base_conso = 100, base_temps_restant = 600):
+    def __init__(self, base_fuel = 7500, base_masse = 0, base_valeur = 0, base_x = 0.0, base_y = 0.0, base_orientation = 0.0, base_index_instruction = 0, base_speed = 1, base_conso = 100, base_temps_restant = 600):
         #self.tutel = init_tutel 
         # stats
         self.fuel = base_fuel

@@ -5,8 +5,8 @@ import sys
 from time import sleep
 
 class MvtRobot(Robot): 
-    def __init__(self, init_tutel):
-        super().__init__(init_tutel)
+    def __init__(self):
+        super().__init__()
         ##caractiéristiques pour mvt robot
         self.theta_robot = 0.0
         self.x_robot = 0.0
@@ -84,6 +84,7 @@ class MvtRobot(Robot):
         for point in ordre[1:]:
             self.tourner_point(point[0], point[1])
             i = i and self.go_point(point[0], point[1])
+            if not i: break
         return i
     
 
