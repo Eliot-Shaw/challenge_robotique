@@ -25,12 +25,12 @@ class MvtRobot(Robot):
         #consommation
         if self.fuel - distance*self.conso <= 0:
             print(f"Manque de fuel ! fuel restant : {self.fuel}")
-            return
+            return False
         #temps
         if self.temps_restant - distance/(self.speed) <= 0:
             print(f"Manque de temps_restant ! temps restant : {self.temps_restant}")
             print(f"Temps nécessaire : {distance/(self.speed)}")
-            return
+            return False
         
         self.fuel -= distance*self.conso
         self.temps_restant -= distance/self.speed
