@@ -55,16 +55,16 @@ class Mcmc():
 
         return Mat
 
-    def distanceAvecMat(self, iA, iB, matDis):
-        return matDis[int(iA)][int(iB)]
+    def distanceAvecMat(self, iA, iB):
+        return self.matDistance[int(iA)][int(iB)]
 
 
-    def longueur(self, Chemin, matDis):
+    def longueur(self, Chemin):
         res = 0
         for i in range(len(Chemin)-1):
             VA = Chemin[i]
             VB = Chemin[i+1]
-            res += self.distanceAvecMat(VA[3], VB[3], matDis)
+            res += self.distanceAvecMat(VA[3], VB[3])
 
         return res
 
@@ -77,13 +77,9 @@ class Mcmc():
 
         return res
 
-    def MCMC3(N, lim_cylindre = 5):
-        Villes = np.concatenate((np.array([[0, 0, 0]]),importerVilles()), axis=0)
-        m = len(Villes)
-        Villes = np.concatenate((Villes, np.array([[i for i in range(m)]]).T), axis=1)
-        matDistance = calculMatriceDis(Villes)
-        sigma0 = np.array([Villes[i] for i in range(lim_cylindre)])
-        lsigma0 = longueur(sigma0, matDistance)
+    def MCMC3(self, N, lim_cylindre = 5):
+        sigma0 = np.array([self.Villes[i] for i in range(lim_cylindre)])
+        lsigma0 = self.longueur(sigma0)
         sigma = sigma0.copy()
         T = 100
         lst_indice = [i for i in range(lim_cylindre)]
@@ -91,30 +87,30 @@ class Mcmc():
             # T = abs(mt.sin(n)/(n**b))*a
             #T *= 0.999
             # T = Tn(n, a, b)
-            T = Tn(n)
+            T = self.Tn(n)
             if T == 0.0:
-                print(f"b trop bas : {b}")
+                print(f"T trop bas : {T}")
                 break
             iA = rd.choice(lst_indice[1:])
-            iB = rd.randint(1, m-1)
+            iB = rd.randint(1, self.m-1)
             while iA == iB:
-                iB = rd.randint(1, m-1)
+                iB = rd.randint(1, self.m-1)
 
             
 
             sigmaPrime = sigma.copy()
             for i in range(lim_cylindre):
                 if sigma[i][3] == iA:
-                    sigmaPrime[i] = Villes[iB]
+                    sigmaPrime[i] = self.Villes[iB]
                 elif sigma[i][3] == iB:
-                    sigmaPrime[i] = Villes[iA]
+                    sigmaPrime[i] = self.Villes[iA]
 
 
             # sigmaPrime[[iA, iB]] = Villes[[iB, iA]]
 
 
-            lsigma = longueur(sigma, matDistance)
-            deltaLong = lsigma - longueur(sigmaPrime, matDistance)
+            lsigma = self.longueur(sigma)
+            deltaLong = lsigma - self.longueur(sigmaPrime)
             if deltaLong >= 0:
                 rho = 1
             else:
@@ -141,28 +137,28 @@ class Mcmc():
                 sigma0 = sigma.copy()
                 lsigma0 = lsigma
 
-        return longueurReelle(sigma0), sigma0
+        return self.longueurReelle(sigma0), sigma0
 
 
-    def Tn(self, N, a = 100, b = 0.99, h = 1):
-        #return 2.5 - np.log(np.log(2.71828182846 + N))
-        return a*(b**N)
-    
-        '''
+    def Tn(self, N, a = 100, b = 0.99, h = 11):
         k = 1
-        n = N % 100000
+        n = N
         a = mt.exp((k - 1) * h)
         b = mt.exp(k * h)
         while not((a < n) and (n <= b)) and k < 300:
             k += 1
             a = mt.exp((k - 1) * h)
-            b = mt.exp(k * h)
+            try:
+                b = mt.exp(k * h)
+            except Exception:
+                print(k)
+                exit()
 
         if k == 300:
+            print(n)
             print("Y a problème")
 
-        return 1/mt.sqrt(k)
-        '''
+        return 1/k
 
     def process(self):
         sig = chem.process()
