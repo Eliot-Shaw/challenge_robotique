@@ -48,6 +48,7 @@ class MvtRobot(Robot):
         with open(self.plan_robot, 'w') as f:
         # Write the Python code to the file
             for i in range(len(self.plan)):
+                self.plan[i][1] = round(self.plan[i][1])
                 if self.plan[i][0] == 'GO':
                     f.write(f'GO {self.plan[i][1]}\n')
                 elif self.plan[i][0] == 'TURN':
