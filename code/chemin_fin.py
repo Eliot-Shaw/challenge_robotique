@@ -39,7 +39,3 @@ def faire_chemin(cylindres, depth):
     for i in range(depth):
         cylindres = echanger_cylindres(cylindres, i+1, choix_cylindre_suivant(cylindres, i))
     return cylindres
-
-map_cylindres = chemin_base.recup_data_map()
-print(map_cylindres[:4])
-print(faire_chemin(map_cylindres, 2)[:4])
