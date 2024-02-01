@@ -11,8 +11,8 @@ class Cylindre():
     def __init__(self,  base_x = 0.0, base_y = 0.0, base_valeur = 0, base_poids = 0):
         self.valeur = base_valeur
         self.poids = base_poids
-        self.x = base_x = 0.0
-        self.y = base_y = 0.0
+        self.x = base_x
+        self.y = base_y 
         self.tab_type = [(1.0,1.0),(2.0,2.0),(3.0,2.0)]
         
     def changer_type(self, type_cylindre):
