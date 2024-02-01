@@ -13,6 +13,9 @@ class MvtRobot(Robot):
         self.y_robot = 0.0
         self.plan = np.empty((1,2)) # ordre, valeur
         self.plan_robot = 'C:\challenge\script.txt'
+    
+    def reinitialisation(self):
+        self.__init__()
 
     def ajout_ordre_plan(self, ordre, valeur):
         self.plan = np.concatenate((self.plan, np.array([[ordre, valeur]])), axis=0)
