@@ -59,11 +59,11 @@ class MvtRobot(Robot):
         DataMap = open(self.plan_robot, 'r')
         return DataMap.readlines()
     
-    def do_instruction(self, instruction):
-        if(instruction[:4]) == "TURN":
-            self.tutel.left(float(instruction[5:]))
-        if(instruction[:2]) == "GO":
-            self.tutel.forward(float(instruction[2:])*5)
+    # def do_instruction(self, instruction):
+    #     if(instruction[:4]) == "TURN":
+    #         self.tutel.left(float(instruction[5:]))
+    #     if(instruction[:2]) == "GO":
+    #         self.tutel.forward(float(instruction[2:])*5)
 
     def process(self, mcmc_instance):
         ordre = mcmc_instance.process()

@@ -118,7 +118,7 @@ def main():
 
     
     for instruction in instructions_robot: #ERREUR path action txt string
-        simulation.robot.do_instruction(instruction)
+        #simulation.robot.do_instruction(instruction)
         simulation.recuperer_cylindre_si_proche()
     simulation.afficher(sig0)
 
