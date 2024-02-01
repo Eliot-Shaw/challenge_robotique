@@ -65,7 +65,6 @@ class Mcmc():
             VA = Chemin[i]
             VB = Chemin[i+1]
             res += self.distanceAvecMat(VA[3], VB[3], matDis)
-        res += self.distanceAvecMat(Chemin[-1][3], Chemin[0][3], matDis)
 
         return res
 
@@ -75,7 +74,6 @@ class Mcmc():
             VA = Chemin[i]
             VB = Chemin[i+1]
             res += self.distance(VA, VB)
-        res += self.distance(Chemin[-1], Chemin[0])
 
         return res
 
