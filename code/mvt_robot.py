@@ -12,7 +12,7 @@ class MvtRobot(Robot):
         self.x_robot = 0.0
         self.y_robot = 0.0
         self.plan = np.empty((1,2)) # ordre, valeur
-        self.plan_robot = '../divers/plan_robot.txt'
+        self.plan_robot = 'C:\challenge\script.txt'
 
     def ajout_ordre_plan(self, ordre, valeur):
         self.plan = np.concatenate((self.plan, np.array([[ordre, valeur]])), axis=0)
@@ -52,7 +52,6 @@ class MvtRobot(Robot):
                     f.write(f'GO {self.plan[i][1]}\n')
                 elif self.plan[i][0] == 'TURN':
                     f.write(f'TURN {self.plan[i][1]}\n')
-                f.write(f'STOP\n')
             f.write(f'FINISH')
 
     def recup_data_action(self):
@@ -73,7 +72,7 @@ class MvtRobot(Robot):
         self.ecrire_plan_txt()
         sleep(0.001)
         instructions_robot = self.recup_data_action()
-        return ordre, instructions_robot
+        return ordre, instructions_robot, self.fuel, self.temps_restant
     
 
 def main():
