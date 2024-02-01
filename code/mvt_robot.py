@@ -21,21 +21,22 @@ class MvtRobot(Robot):
         distance = math.sqrt((x_point-self.x_robot)**2+(y_point-self.y_robot)**2)
         if distance == 0.0:
             print("Distance nulle")
-            return
+            return True
         #consommation
         if self.fuel - distance*self.conso <= 0:
             print(f"Manque de fuel ! fuel restant : {self.fuel}")
-            return
+            return False
         #temps
         if self.temps_restant - distance/(self.speed) <= 0:
             print(f"Manque de temps_restant ! temps restant : {self.temps_restant}")
             print(f"Temps nécessaire : {distance/(self.speed)}")
-            return
+            return False
         
         self.fuel -= distance*self.conso
         self.temps_restant -= distance/self.speed
         self.x_robot, self.y_robot = x_point, y_point
         self.ajout_ordre_plan('GO', distance)
+        return True
 
     def tourner_point(self, x_point, y_point):
         angle_point = math.atan2((y_point-self.y_robot),(x_point-self.x_robot))
@@ -67,13 +68,23 @@ class MvtRobot(Robot):
 
     def process(self, mcmc_instance):
         ordre = mcmc_instance.process()
+        i = True
         for point in ordre[1:]:
             self.tourner_point(point[0], point[1])
-            self.go_point(point[0], point[1])
+            i = i and self.go_point(point[0], point[1])
         self.ecrire_plan_txt()
+        
         sleep(0.001)
         instructions_robot = self.recup_data_action()
         return ordre, instructions_robot, self.fuel, self.temps_restant
+    
+
+    def faisable(self, ordre):
+        i = True
+        for point in ordre[1:]:
+            self.tourner_point(point[0], point[1])
+            i = i and self.go_point(point[0], point[1])
+        return i
     
 
 def main():
