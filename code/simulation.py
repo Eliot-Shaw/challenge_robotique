@@ -117,7 +117,7 @@ def main():
     print(f"fuel restant : {fuel_restant}")
 
     
-    for instruction in instructions_robot: #ERREUR path action txt string
+    for instruction in instructions_robot:
         #simulation.robot.do_instruction(instruction)
         simulation.recuperer_cylindre_si_proche()
     simulation.afficher(sig0)
