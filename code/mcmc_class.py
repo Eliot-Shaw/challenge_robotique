@@ -186,7 +186,7 @@ def afficher(sig0):
         ax.add_patch(c1)
 
     plt.plot(sig0.T[0], sig0.T[1])
-    plt.plot(np.array([sig0.T[0][-1], sig0.T[0][0]]),np.array([sig0.T[1][-1], sig0.T[1][0]]))
+    # plt.plot(np.array([sig0.T[0][-1], sig0.T[0][0]]),np.array([sig0.T[1][-1], sig0.T[1][0]]))
     plt.show()
 
 

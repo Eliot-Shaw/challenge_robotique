@@ -42,7 +42,6 @@ def main():
     macmac = mcmc_class.Mcmc()
     mvt_bot = mvt_robot.MvtRobot()
     meilleur_chemin = macmac.process(milieu)
-
     chemin_varaiable = meilleur_chemin.copy()
     while min < max-1:
         print(f"dichotomie entre {min} et {max} avec mid : {milieu}")
@@ -57,8 +56,9 @@ def main():
             milieu = (min + max) // 2
             meilleur_chemin = chemin_varaiable.copy()
             chemin_varaiable = macmac.process(milieu)
-    
-
+    mvt_bot.plan = meilleur_chemin
+    mvt_bot.ecrire_plan_txt()
+    print(f"meilleur chemin : {meilleur_chemin}")
     mcmc_class.afficher(meilleur_chemin)
     # cheum = Soustraire(meilleur_chemin, map)
     # chemin_final = faire_chemin(cheum,3)
