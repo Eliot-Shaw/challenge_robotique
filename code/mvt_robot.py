@@ -49,6 +49,7 @@ class MvtRobot(Robot):
         self.ajout_ordre_plan('TURN', angle) # vérifier si tourne dans le bon sens en fonction du +/-, sinon inverser calcul degré
 
     def ecrire_plan_txt(self):
+        print(self.plan_robot)
         with open(self.plan_robot, 'w') as f:
         # Write the Python code to the file
             for i in range(len(self.plan)):

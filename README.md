@@ -1,6 +1,7 @@
 # challenge_robotique
 ## La super stratégie
-On utilise mcmc
+On utilise mcmc :D
+Methode de montecarlo
 
 ## Les super membres
 Eliot SHAW
