@@ -10,6 +10,7 @@ Camille Forest
 [map](https://partage.imt.fr/index.php/s/BwXS9fkE95CxxMf)
 [script pour voir](https://partage.imt.fr/index.php/s/CQ9bt2dmzt4efoN)
 [API](https://partage.imt.fr/index.php/s/wbbfNLm3y4peL7k)
+[maps de test](https://partage.imt.fr/index.php/s/B8rASYoAY5DDHDo)
 
 temps 600s
 carburant 10000
