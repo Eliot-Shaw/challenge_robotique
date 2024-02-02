@@ -12,7 +12,12 @@ Camille Forest
 [API](https://partage.imt.fr/index.php/s/wbbfNLm3y4peL7k)
 [maps de test](https://partage.imt.fr/index.php/s/B8rASYoAY5DDHDo)
 
+
+## Methodologie
+
+Données de base : 
 temps 600s
 carburant 10000
 vmax 10m/s
 6.93*10-2
+
