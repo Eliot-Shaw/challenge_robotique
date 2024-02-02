@@ -1,0 +1,1 @@
+gain = 38 fuel = 0 temps = 330,4977
