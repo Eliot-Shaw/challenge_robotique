@@ -56,8 +56,9 @@ def main():
             milieu = (min + max) // 2
             meilleur_chemin = chemin_varaiable.copy()
             chemin_varaiable = macmac.process(milieu)
-    mvt_bot.plan = meilleur_chemin
-    mvt_bot.ecrire_plan_txt()
+
+
+    mvt_robot.ecrire_plan_txt(mvt_bot.plan, 'C:\challenge\script.txt')
     print(f"meilleur chemin : {meilleur_chemin}")
     mcmc_class.afficher(meilleur_chemin)
     # cheum = Soustraire(meilleur_chemin, map)
