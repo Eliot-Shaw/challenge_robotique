@@ -94,7 +94,7 @@ def ecrire_plan_txt(unplan, unpath):
         with open(unpath, 'w') as f:
         # Write the Python code to the file
             for i in range(len(unplan)):
-                unplan[i][1] = f"{round(float(unplan[i][1]))}"
+                unplan[i][1] = f"{float(unplan[i][1])}"
                 if unplan[i][0] == 'GO':
                     f.write(f'GO {unplan[i][1]}\n')
                 elif unplan[i][0] == 'TURN':
