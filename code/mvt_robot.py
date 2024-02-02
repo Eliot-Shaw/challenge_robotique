@@ -57,6 +57,7 @@ class MvtRobot(Robot):
                     f.write(f'GO {self.plan[i][1]}\n')
                 elif self.plan[i][0] == 'TURN':
                     f.write(f'TURN {self.plan[i][1]}\n')
+            f.write(f'STOP')
             f.write(f'FINISH')
 
     def recup_data_action(self):

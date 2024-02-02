@@ -20,9 +20,10 @@ def Soustraire(lst_cylindres, cylindres_total):
     premier_cylindre = lst_cylindres[-1]
 
     
-    cylindres = np.delete(cylindres, lst_cylindres.T[-1], axis = 0)
+    
+    cylindres = np.delete(cylindres, ((lst_cylindres.T[-1]).astype(int)), axis = 0)
 
-    np.concatenate((np.array([premier_cylindre]),cylindres), axis = 0)
+    cylindres = np.concatenate((np.array([premier_cylindre]),cylindres), axis = 0)
 
     return cylindres
 
@@ -39,12 +40,13 @@ def main():
     max = nb_cylindre
     milieu = (min + max)// 2
     macmac = mcmc_class.Mcmc()
-    meilleur_chemin = macmac.process(milieu)
     mvt_bot = mvt_robot.MvtRobot()
+    meilleur_chemin = macmac.process(milieu)
 
     chemin_varaiable = meilleur_chemin.copy()
-    while min < max:
+    while min < max-1:
         print(f"dichotomie entre {min} et {max} avec mid : {milieu}")
+        mvt_bot.reinitialisation()
         if not mvt_bot.faisable(chemin_varaiable):
             max = milieu
             milieu = (min + max) // 2
@@ -58,12 +60,14 @@ def main():
     
 
     mcmc_class.afficher(meilleur_chemin)
-    cheum = Soustraire(meilleur_chemin, map)
-    mcmc_class.afficher(cheum)
-    chemin_final = faire_chemin(cheum)
-    mcmc_class.afficher(chemin_final)
+    # cheum = Soustraire(meilleur_chemin, map)
+    # chemin_final = faire_chemin(cheum,3)
+    # mcmc_class.afficher(chemin_final)
+    # print(meilleur_chemin[-1])
+    # print(cheum[0])
 
-    return chemin_final
+
+    return meilleur_chemin
     
 
 if __name__ == "__main__":

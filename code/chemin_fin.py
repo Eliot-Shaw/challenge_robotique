@@ -38,4 +38,4 @@ def echanger_cylindres(cylindres, id_cylindre, id_voulue):
 def faire_chemin(cylindres, depth = 2):
     for i in range(depth):
         cylindres = echanger_cylindres(cylindres, i+1, choix_cylindre_suivant(cylindres, i))
-    return cylindres
+    return cylindres[:2]
