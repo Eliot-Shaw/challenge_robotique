@@ -72,10 +72,9 @@ class MvtRobot(Robot):
 
     def process(self, mcmc_instance):
         ordre = mcmc_instance.process()
-        i = True
         for point in ordre[1:]:
             self.tourner_point(point[0], point[1])
-            i = i and self.go_point(point[0], point[1])
+            self.go_point(point[0], point[1])
         self.ecrire_plan_txt()
         
         sleep(0.001)
@@ -91,6 +90,17 @@ class MvtRobot(Robot):
             if not i: break
         return i
     
+def ecrire_plan_txt(unplan, unpath):
+        with open(unpath, 'w') as f:
+        # Write the Python code to the file
+            for i in range(len(unemap)):
+                unemap[i][1] = f"{round(float(unemap[i][1]))}"
+                if unemap[i][0] == 'GO':
+                    f.write(f'GO {unemap[i][1]}\n')
+                elif unemap[i][0] == 'TURN':
+                    f.write(f'TURN {unemap[i][1]}\n')
+            f.write(f'STOP\n')
+            f.write(f'FINISH')
 
 def main():
     pass
