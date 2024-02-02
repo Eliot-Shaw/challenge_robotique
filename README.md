@@ -1,6 +1,8 @@
 # challenge_robotique
 ## La super stratégie
-On utilise mcmc
+On utilise mcmc :D
+Méthode de Monte-Carlo par chaînes de Markov
+Avec la méthode de recuit simulé
 
 ## Les super membres
 Eliot SHAW
