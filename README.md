@@ -36,4 +36,4 @@ Données de base :
 temps 600s
 carburant 10000
 vmax 10m/s
-6.93*10-2
+6.93*10**-2
